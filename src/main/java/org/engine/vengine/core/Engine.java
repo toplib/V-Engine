@@ -33,10 +33,12 @@ public class Engine {
         window = new Window(config.getTitle(), config.getWidth(), config.getHeight());
         window.init();
 
+        // Create OpenGL capabilities after making the context current and BEFORE
+        // creating any GL objects (e.g., shaders in renderer.init()).
+        GL.createCapabilities();
+
         renderer = new Renderer(window);
         renderer.init();
-
-        GL.createCapabilities();
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);

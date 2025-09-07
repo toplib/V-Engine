@@ -36,7 +36,7 @@ public class Renderer {
         shader = ResourceManager.loadShader("basic", "resources/vertex.glsl", "resources/fragment.glsl");
 
         // Load texture
-        texture = ResourceManager.loadTexture("container", "resources/container.jpg");
+        texture = ResourceManager.loadTexture("container", "resources/texture.png");
 
         // Create material
         material = new Material(shader);
