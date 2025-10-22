@@ -17,10 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.filesystem;
+package org.engine.vengine.platform;
 
-public class Asset {
-    private String filename;
-    private long size; // In bytes
+import org.engine.vengine.util.CursorMode;
+import org.joml.Vector2f;
 
+public interface Input {
+    boolean isKeyDown(int keyCode);
+    boolean isMouseButtonDown(int button);
+    Vector2f getMousePosition();
+    void setCursorMode(CursorMode mode);
 }

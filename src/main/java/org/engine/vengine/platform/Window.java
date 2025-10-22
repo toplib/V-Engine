@@ -17,7 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.objects;
+package org.engine.vengine.platform;
 
-public interface GameObject {
+public interface Window {
+    void show();
+    boolean shouldClose();
+    void swapBuffers();
+    void pollEvents();
+    int getWidth();
+    int getHeight();
+    long getWindowHandle(); // for native interop
 }

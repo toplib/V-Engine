@@ -17,30 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.filesystem;
+package org.engine.vengine.boot;
 
-import java.util.HashMap;
-
-public class RamStorage {
-    private static HashMap<String, Object> ram = new HashMap<>();
-
-    public static Object put(String key, Object value){
-        ram.put(key, value);
-        return value;
-    }
-    public static void remove(String key){
-        ram.remove(key);
-    }
-    public static Object get(String key){
-        return ram.get(key);
-    }
-    public static Object set(String key, Object value){
-        ram.remove(key);
-        ram.put(key, value);
-        return ram.get(key);
-    }
-    public static boolean has(String key, Object value){
-        return ram.containsKey(key);
-    }
-
+public final class Engine {
+    public static Engine create(EngineConfig config);
+    public void start();
+    public void stop();
+    public <T> T getService(Class<T> service);
 }

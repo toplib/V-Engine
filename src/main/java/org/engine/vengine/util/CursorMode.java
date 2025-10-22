@@ -17,18 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.filesystem;
+package org.engine.vengine.util;
 
-import java.io.File;
-
-public interface PackageSystem {
-
-    void save(File file);
-    void load(File file);
-    File getFile();
-
-    int addFile(File file); // Return created file id
-    void removeFile(int id);
-    int getFileCount();
-
+public enum CursorMode {
 }

@@ -17,27 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine;
+package org.engine.vengine.boot;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.Random;
-import java.util.UUID;
-
-public class Application {
-    private static final Logger logger = LoggerFactory.getLogger("Application");
-    private String ApplicationName;
-    private final UUID appUUID;
-
-    public Application(String applicationName) {
-        this.ApplicationName = applicationName;
-        this.appUUID = UUID.randomUUID();
-        logger.info("Initialize engine modules");
-
-
-    }
-
-
+public class EngineConfig {
 }
