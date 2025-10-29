@@ -17,21 +17,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.logging;
 
-public final class Engine {
+public enum LogLevel {
+    TRACE(10), DEBUG(20), INFO(30), WARN(40), ERROR(50), FATAL(60);
 
+    private final int priority;
 
-    public static Engine create(EngineConfig config){
-        return null;
-    }
-    public void start(){
+    LogLevel(int priority) { this.priority = priority; }
 
-    }
-    public void stop(){
+    public int intValue() { return priority; }
 
-    }
-    public <T> T getService(Class<T> service){
-        return null;
+    public boolean isEnabled(LogLevel threshold) {
+        return this.priority >= threshold.priority;
     }
 }

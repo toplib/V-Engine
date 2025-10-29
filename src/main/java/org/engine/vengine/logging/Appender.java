@@ -17,21 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.logging;
 
-public final class Engine {
-
-
-    public static Engine create(EngineConfig config){
-        return null;
-    }
-    public void start(){
-
-    }
-    public void stop(){
-
-    }
-    public <T> T getService(Class<T> service){
-        return null;
-    }
+public interface Appender {
+    void append(LogRecord record);
+    void flush();
+    void close();
 }
