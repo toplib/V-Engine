@@ -17,15 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.service.config;
 
-public class Engine {
+import org.engine.vengine.service.Service;
 
-    public Engine(){
+import java.io.File;
+
+public class ConfigService implements Service {
+
+    private
+    public ConfigService(File config){
 
     }
 
-    public void getConfigService(){
+    @Override
+    public void load() {
+
+    }
+
+    @Override
+    public void unload() {
 
     }
 }

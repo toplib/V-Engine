@@ -18,42 +18,19 @@
 
 package org.engine.vtest;
 
-import org.engine.vengine.boot.Engine;
-import org.engine.vengine.boot.EngineConfig;
-import org.engine.vengine.logging.LogLevel;
-import org.engine.vengine.logging.LogManager;
-import org.engine.vengine.logging.Logger;
-import org.engine.vengine.logging.LoggerConfig;
+import org.engine.vengine.platform.windows.Input;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 
 public class Main {
-    private static final Logger logger = LogManager.get().getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger("VTest");
 
     public static void main(String[] args){
-        LoggerConfig cfg = new LoggerConfig()
-                .setLevel(LogLevel.DEBUG)
-                .addConsole()
-                .addRollingFile("logs/engine.log", 10 * 1024 * 1024L, 5)
-                .setAsync(false)
-                .setQueueCapacity(32768);
-
-        LogManager.get().applyConfig(cfg);
-
-        logger.info("Engine test startup...");
-        logger.debug("Logger initialized successfully.");
-        //try { Thread.sleep(100); } catch (InterruptedException ignored) {}
-        
-        LogManager.get().flush();
-        EngineConfig config = new EngineConfig();
-        config.setAppName("Test Application");
-        config.setDebug(true);
-        config.setVersion("Alpha 0.0.1");
-        config.setWidth(800);
-        config.setHeight(600);
-
-        Engine engine = new Engine();
-        engine.create(config);
-        engine.start();
-
-        LogManager.get().shutdown();
+        logger.info("Creating new Application Instance");
+        Input input = new Input();
+        input.getKey(GLFW_KEY_A);
+        input.getClipboardString();
     }
 }

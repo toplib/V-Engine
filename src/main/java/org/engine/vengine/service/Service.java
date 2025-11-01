@@ -17,14 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.platform;
+package org.engine.vengine.service;
 
-public interface Window {
-    void show();
-    boolean shouldClose();
-    void swapBuffers();
-    void pollEvents();
-    int getWidth();
-    int getHeight();
-    long getWindowHandle(); // for native interop
+public interface Service {
+    void load();
+    void unload();
 }

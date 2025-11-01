@@ -17,15 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.render;
 
-public class Engine {
-
-    public Engine(){
-
-    }
-
-    public void getConfigService(){
-
-    }
+public enum RenderAPI {
+    Vulkan,
+    OpenGL,
+    DirectX
 }

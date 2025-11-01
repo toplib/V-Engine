@@ -17,15 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.service.config;
 
-public class Engine {
+public class Config {
 
-    public Engine(){
-
-    }
-
-    public void getConfigService(){
-
-    }
 }

@@ -17,14 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.platform;
+package org.engine.vengine.platform.windows;
 
-import org.engine.vengine.util.CursorMode;
-import org.joml.Vector2f;
+import org.engine.vengine.platform.IWindow;
 
-public interface Input {
-    boolean isKeyDown(int keyCode);
-    boolean isMouseButtonDown(int button);
-    Vector2f getMousePosition();
-    void setCursorMode(CursorMode mode);
+public class Window implements IWindow {
 }

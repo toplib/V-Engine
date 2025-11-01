@@ -17,10 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.logging;
+package org.engine.vengine.render;
 
-public interface Appender {
-    void append(LogRecord record);
-    void flush();
-    void close();
+public interface Renderer {
+    void init();
+    void renderFrame();
+    void resize(int width, int height);
+    void shutdown();
 }

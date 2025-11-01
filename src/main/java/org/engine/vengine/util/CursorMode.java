@@ -19,5 +19,20 @@
 
 package org.engine.vengine.util;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 public enum CursorMode {
+    NORMAL(GLFW_CURSOR_NORMAL),
+    HIDDEN(GLFW_CURSOR_HIDDEN),
+    DISABLED(GLFW_CURSOR_DISABLED);
+
+    private final int glfwValue;
+
+    CursorMode(int glfwValue) {
+        this.glfwValue = glfwValue;
+    }
+
+    public int getGlfwValue() {
+        return glfwValue;
+    }
 }

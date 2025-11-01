@@ -17,15 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.platform;
 
-public class Engine {
+import org.joml.Vector2f;
 
-    public Engine(){
+public interface IInput {
+    void setActiveWindow(long window);
+    int getKeyState(int keyCode);
+    boolean getKey(int keyCode);
+    boolean getKeyDown(int keyCode);
+    boolean getKeyUp(int keyCode);
 
-    }
+    Vector2f getCursorPosition();
+    Vector2f getScrollDelta();
 
-    public void getConfigService(){
+    boolean getMouseButton(int button);
+    boolean getMouseButtonDown(int button);
+    boolean getMouseButtonUp(int button);
 
-    }
+    String getClipboardString();
+    void setClipboardString(String clipboardString);
 }

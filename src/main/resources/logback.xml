@@ -18,22 +18,27 @@
   -->
 
 <configuration>
+
+    <!-- Консольный вывод -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!-- Файловый вывод (перезаписывается при каждом запуске) -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>latest.log</file>
-        <append>true</append>
+        <file>logs/latest.log</file>
+        <append>false</append> <!-- перезаписывать файл при запуске -->
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="debug">
+    <!-- Корневой логгер -->
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
-</configuration>
 
+</configuration>
