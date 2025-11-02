@@ -18,7 +18,11 @@
 
 package org.engine.vtest;
 
+import org.engine.vengine.filesystem.DefaultResourceLoader;
+import org.engine.vengine.filesystem.FileManager;
+import org.engine.vengine.filesystem.Resource;
 import org.engine.vengine.platform.windows.Input;
+import org.engine.vengine.platform.windows.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +33,18 @@ public class Main {
 
     public static void main(String[] args){
         logger.info("Creating new Application Instance");
-        Input input = new Input();
-        input.getKey(GLFW_KEY_A);
-        input.getClipboardString();
+        FileManager fileManager = new FileManager();
+        DefaultResourceLoader defaultLoader = new DefaultResourceLoader();
+
+        // register common extensions
+        fileManager.registerLoader(defaultLoader, "vert", "frag", "vs", "fs", "png", "jpg", "obj", "txt", "raw");
+
+        // load resource
+        Resource res = fileManager.loadResource("resources/vertex.glsl");
+        System.out.println("Loaded: " + res);
+
+        // later, release
+        fileManager.unloadResource(res);
+        Window window = new Window();
     }
 }

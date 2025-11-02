@@ -17,13 +17,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.platform;
+package org.engine.vengine.filesystem;
 
-import org.engine.vengine.render.Renderer;
+public enum ResourceType {
+    // Shaders
+    VERTEX_SHADER,
+    FRAGMENT_SHADER,
 
-public interface IWindow {
-    long getWindowId();
-    void show();
-    void hide();
-    Renderer getRenderer();
+    // Other resources
+    TEXTURE,
+    OBJECT,
+    RAW
 }

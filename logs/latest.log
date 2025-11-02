@@ -1,1 +1,4 @@
-2025-11-01 13:21:48.556 [main] INFO  VTest - Creating new Application Instance
+2025-11-02 19:20:19.324 [main] INFO  org.engine.vengine.shader.Shader - Attached VERTEX_SHADER shader: shaders/basic.vert
+2025-11-02 19:20:19.330 [main] INFO  org.engine.vengine.shader.Shader - Attached FRAGMENT_SHADER shader: shaders/basic.frag
+2025-11-02 19:20:19.331 [main] INFO  org.engine.vengine.shader.Shader - Shader program linked successfully (ID = 1).
+2025-11-02 19:48:32.492 [main] INFO  org.engine.vengine.shader.Shader - Shader program (ID = 1) deleted.

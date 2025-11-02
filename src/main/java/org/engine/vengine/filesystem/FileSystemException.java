@@ -17,13 +17,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.platform;
+package org.engine.vengine.filesystem;
 
-import org.engine.vengine.render.Renderer;
-
-public interface IWindow {
-    long getWindowId();
-    void show();
-    void hide();
-    Renderer getRenderer();
+public class FileSystemException extends RuntimeException {
+    public FileSystemException(String message) {
+        super(message);
+    }
+    public FileSystemException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -25,7 +25,7 @@ import java.io.File;
 
 public class ConfigService implements Service {
 
-    private
+
     public ConfigService(File config){
 
     }
