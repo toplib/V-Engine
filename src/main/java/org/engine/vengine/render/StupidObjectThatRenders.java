@@ -17,9 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.service;
+package org.engine.vengine.render;
 
-public interface Service {
-    void load();
-    void unload();
+public class StupidObjectThatRenders {
+
+    public StupidObjectThatRenders() {
+    }
+
+    public void render(){
+
+    }
 }

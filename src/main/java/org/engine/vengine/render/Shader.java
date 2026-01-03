@@ -19,9 +19,5 @@
 
 package org.engine.vengine.render;
 
-public interface Renderer {
-    void init();
-    void renderFrame();
-    void resize(int width, int height);
-    void shutdown();
+public class Shader {
 }

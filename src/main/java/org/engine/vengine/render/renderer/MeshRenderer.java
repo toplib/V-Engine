@@ -17,15 +17,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.filesystem;
+package org.engine.vengine.render.renderer;
 
-public enum ResourceType {
-    // Shaders
-    VERTEX_SHADER,
-    FRAGMENT_SHADER,
+public class MeshRenderer extends Renderer{
 
-    // Other resources
-    TEXTURE,
-    OBJECT,
-    RAW
+    public MeshRenderer() {
+    }
+
+    @Override
+    public void render(){
+
+    }
+
 }

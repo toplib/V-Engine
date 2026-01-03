@@ -17,13 +17,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.filesystem;
+package org.engine.vengine;
 
-public class FileSystemException extends RuntimeException {
-    public FileSystemException(String message) {
-        super(message);
-    }
-    public FileSystemException(String message, Throwable cause) {
-        super(message, cause);
+import org.engine.vengine.render.renderer.MeshRenderer;
+import org.engine.vengine.render.renderer.Renderer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GameObject {
+    private List<Renderer> renderers;
+
+    public GameObject() {
+        this.renderers = new ArrayList<>();
+        renderers.add(new MeshRenderer());
+
     }
 }

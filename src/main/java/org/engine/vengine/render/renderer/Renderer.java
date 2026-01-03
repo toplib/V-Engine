@@ -17,15 +17,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.boot;
+package org.engine.vengine.render.renderer;
 
-public class Engine {
+import org.engine.vengine.ecs.Component;
 
-    public Engine(){
+public abstract class Renderer {
+    private boolean enabled;
 
+    void setEnabled(boolean state){
+        this.enabled = enabled;
     }
-
-    public void getConfigService(){
-
+    boolean isEnabled(){
+        return this.enabled;
     }
+    abstract void render();
 }

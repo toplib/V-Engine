@@ -17,22 +17,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.util;
+package org.engine.vengine.ecs;
 
-import static org.lwjgl.glfw.GLFW.*;
-
-public enum CursorMode {
-    NORMAL(GLFW_CURSOR_NORMAL),
-    HIDDEN(GLFW_CURSOR_HIDDEN),
-    DISABLED(GLFW_CURSOR_DISABLED);
-
-    private final int glfwValue;
-
-    CursorMode(int glfwValue) {
-        this.glfwValue = glfwValue;
+public abstract class Component {
+    boolean enabled;
+    void setEnabled(boolean state){
+        this.enabled = state;
     }
-
-    public int getGlfwValue() {
-        return glfwValue;
+    boolean isEnabled(){
+        return enabled;
     }
+    public abstract void start();
+    public abstract void update();
 }
