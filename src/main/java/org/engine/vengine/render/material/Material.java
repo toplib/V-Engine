@@ -17,16 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.ecs;
+package org.engine.vengine.render.material;
 
-public abstract class Component {
-    boolean enabled;
-    void setEnabled(boolean state){
-        this.enabled = state;
-    }
-    boolean isEnabled(){
-        return enabled;
-    }
-    public abstract void start();
-    public abstract void update();
+import org.engine.vengine.render.shader.ShaderProgram;
+
+public class Material {
+    ShaderProgram program;
 }

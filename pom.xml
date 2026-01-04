@@ -25,14 +25,14 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lwjgl.version>3.3.6</lwjgl.version>
-        <lwjgl.natives>natives-windows</lwjgl.natives>
+        <lwjgl.natives>natives-linux</lwjgl.natives>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.16</version>
+            <version>1.5.19</version>
         </dependency>
 
         <dependency>

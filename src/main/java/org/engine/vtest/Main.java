@@ -1,4 +1,3 @@
-
 /*
  * V-Engine
  * Copyright (C) 2025
@@ -17,16 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.ecs;
+package org.engine.vtest;
 
-public abstract class Component {
-    boolean enabled;
-    void setEnabled(boolean state){
-        this.enabled = state;
+import org.engine.vengine.render.Window;
+import org.engine.vengine.render.WindowData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+
+public class Main {
+    private static final Logger logger = LoggerFactory.getLogger("VTest");
+
+    public static void main(String[] args){
+        logger.info("Creating new Application Instance");
+        WindowData data = new WindowData();
+        Window window = new Window(data);
+
+        window.init();
+        window.startRenderLoop();
+        window.destroy();
     }
-    boolean isEnabled(){
-        return enabled;
-    }
-    public abstract void start();
-    public abstract void update();
 }
