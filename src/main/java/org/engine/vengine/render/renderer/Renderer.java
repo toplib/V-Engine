@@ -19,16 +19,6 @@
 
 package org.engine.vengine.render.renderer;
 
-import org.engine.vengine.ecs.Component;
+public class Renderer {
 
-public abstract class Renderer {
-    private boolean enabled;
-
-    void setEnabled(boolean state){
-        this.enabled = enabled;
-    }
-    boolean isEnabled(){
-        return this.enabled;
-    }
-    abstract void render();
 }

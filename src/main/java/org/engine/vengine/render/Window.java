@@ -19,6 +19,8 @@
 
 package org.engine.vengine.render;
 
+import org.engine.vengine.util.Size;
+import org.engine.vengine.util.StupidObjectThatRenders;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;

@@ -17,20 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine;
+package org.engine.vengine.render.material;
 
-import org.engine.vengine.render.renderer.MeshRenderer;
-import org.engine.vengine.render.renderer.Renderer;
+import org.engine.vengine.render.shader.ShaderProgram;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GameObject {
-    private List<Renderer> renderers;
-
-    public GameObject() {
-        this.renderers = new ArrayList<>();
-        renderers.add(new MeshRenderer());
-
-    }
+public class Material {
+    ShaderProgram program;
 }

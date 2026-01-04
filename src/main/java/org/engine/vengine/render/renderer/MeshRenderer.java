@@ -19,14 +19,5 @@
 
 package org.engine.vengine.render.renderer;
 
-public class MeshRenderer extends Renderer{
-
-    public MeshRenderer() {
-    }
-
-    @Override
-    public void render(){
-
-    }
-
+public class MeshRenderer {
 }

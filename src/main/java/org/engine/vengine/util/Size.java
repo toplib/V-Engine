@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.render;
+package org.engine.vengine.util;
 
 import java.util.Objects;
 
