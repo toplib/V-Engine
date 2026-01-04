@@ -73,13 +73,15 @@ public class Window {
 
     public void startRenderLoop(){
         GL.createCapabilities();
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        StupidObjectThatRenders object = new StupidObjectThatRenders();
         while ( !glfwWindowShouldClose(handle) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+            object.render();
             glfwSwapBuffers(handle);
             glfwPollEvents();
         }
+        object.delete();
     }
 
     public void destroy(){
