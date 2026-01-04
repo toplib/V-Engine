@@ -22,5 +22,5 @@ package org.engine.vengine.render.material;
 import org.engine.vengine.render.shader.ShaderProgram;
 
 public class Material {
-    ShaderProgram program;
+    public ShaderProgram shader;
 }

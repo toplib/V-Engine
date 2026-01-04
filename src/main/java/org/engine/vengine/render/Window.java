@@ -19,8 +19,13 @@
 
 package org.engine.vengine.render;
 
+import org.engine.vengine.mesh.Mesh;
+import org.engine.vengine.render.material.Material;
+import org.engine.vengine.render.renderer.MeshRenderer;
+import org.engine.vengine.render.renderer.Renderer;
+import org.engine.vengine.render.shader.Shader;
+import org.engine.vengine.render.shader.ShaderProgram;
 import org.engine.vengine.util.Size;
-import org.engine.vengine.util.StupidObjectThatRenders;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
@@ -32,6 +37,8 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -76,14 +83,51 @@ public class Window {
     public void startRenderLoop(){
         GL.createCapabilities();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        StupidObjectThatRenders object = new StupidObjectThatRenders();
+        Material material = new Material();
+        Shader vertexShader = new Shader(GL_VERTEX_SHADER);
+        vertexShader.source("#version 330 core\n" +
+                "layout (location = 0) in vec3 aPos;\n" +
+                "void main() {\n" +
+                "    gl_Position = vec4(aPos, 1.0);\n" +
+                "}");
+        vertexShader.compile();
+        Shader fragmentShader = new Shader(GL_FRAGMENT_SHADER);
+        fragmentShader.source("#version 330 core\n" +
+                "out vec4 FragColor;\n" +
+                "void main() {\n" +
+                "    FragColor = vec4(1.0, 0.5, 0.2, 1.0);\n" +
+                "}");
+        fragmentShader.compile();
+
+        ShaderProgram shader = new ShaderProgram();
+        shader.attach(vertexShader);
+        shader.attach(fragmentShader);
+        shader.link();
+
+        material.shader = shader;
+        final float[] vertices = {
+                0.5f,  0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+                -0.5f,  0.5f, 0.0f
+        };
+
+        final int[] indices = {
+                0, 1, 3,
+                1, 2, 3
+        };
+        Mesh mesh = new Mesh(vertices, indices);
+        MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
+
+        Renderer renderer = new Renderer();
+
+
         while ( !glfwWindowShouldClose(handle) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            object.render();
+            renderer.render(meshRenderer);
             glfwSwapBuffers(handle);
             glfwPollEvents();
         }
-        object.delete();
     }
 
     public void destroy(){

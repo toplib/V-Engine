@@ -19,6 +19,19 @@
 
 package org.engine.vengine.render.renderer;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 public class Renderer {
 
+    public void render(MeshRenderer mr) {
+        mr.material.shader.bind();
+        glBindVertexArray(mr.mesh.vao);
+        glDrawElements(
+                GL_TRIANGLES,
+                mr.mesh.indexCount,
+                GL_UNSIGNED_INT,
+                0
+        );
+    }
 }

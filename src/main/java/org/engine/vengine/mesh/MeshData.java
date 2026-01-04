@@ -17,17 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine.mesh;
 
-import org.engine.vengine.mesh.Mesh;
-import org.engine.vengine.render.material.Material;
-
-public class MeshRenderer {
-    Mesh mesh;
-    Material material;
-
-    public MeshRenderer(Mesh mesh, Material material) {
-        this.mesh = mesh;
-        this.material = material;
-    }
+public class MeshData {
 }
