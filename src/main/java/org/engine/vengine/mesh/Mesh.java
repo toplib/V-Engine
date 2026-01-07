@@ -54,4 +54,8 @@ public class Mesh {
         indexCount = indices.length;
         glBindVertexArray(0);
     }
+
+    public void free(){
+        glDeleteBuffers(vao);
+    }
 }

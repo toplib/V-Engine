@@ -17,25 +17,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine;
 
-import org.engine.vengine.Scene;
+import org.engine.vengine.render.renderer.MeshRenderer;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Renderer {
+public class Scene {
+    public List<MeshRenderer> renderers;
 
-    public void render(Scene scene) {
-        for (MeshRenderer mr : scene.renderers){
-            mr.material.shader.bind();
-            glBindVertexArray(mr.mesh.vao);
-            glDrawElements(
-                    GL_TRIANGLES,
-                    mr.mesh.indexCount,
-                    GL_UNSIGNED_INT,
-                    0
-            );
-        }
+    public Scene(){
+        this.renderers = new ArrayList<>();
     }
 }

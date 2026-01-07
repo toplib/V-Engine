@@ -17,25 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine.util;
 
-import org.engine.vengine.Scene;
+import org.joml.Vector3f;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
-public class Renderer {
-
-    public void render(Scene scene) {
-        for (MeshRenderer mr : scene.renderers){
-            mr.material.shader.bind();
-            glBindVertexArray(mr.mesh.vao);
-            glDrawElements(
-                    GL_TRIANGLES,
-                    mr.mesh.indexCount,
-                    GL_UNSIGNED_INT,
-                    0
-            );
-        }
-    }
+public class Transform {
+    public Vector3f position;
+    public Vector3f rotation;
+    public Vector3f scale;
 }

@@ -19,6 +19,7 @@
 
 package org.engine.vengine.render;
 
+import org.engine.vengine.Scene;
 import org.engine.vengine.mesh.Mesh;
 import org.engine.vengine.render.material.Material;
 import org.engine.vengine.render.renderer.MeshRenderer;
@@ -83,6 +84,8 @@ public class Window {
     public void startRenderLoop(){
         GL.createCapabilities();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+
         Material material = new Material();
         Shader vertexShader = new Shader(GL_VERTEX_SHADER);
         vertexShader.source("#version 330 core\n" +
@@ -106,25 +109,26 @@ public class Window {
 
         material.shader = shader;
         final float[] vertices = {
-                0.5f,  0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                -0.5f,  0.5f, 0.0f
+                0.0f,  0.5f, 0.0f,
+                0.0f, -0.5f, 0.0f,
+                -1.0f, -0.5f, 0.0f,
+                -1.0f,  0.5f, 0.0f
         };
 
         final int[] indices = {
                 0, 1, 3,
                 1, 2, 3
         };
+
         Mesh mesh = new Mesh(vertices, indices);
         MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 
         Renderer renderer = new Renderer();
-
-
+        Scene scene = new Scene();
+        scene.renderers.add(meshRenderer);
         while ( !glfwWindowShouldClose(handle) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            renderer.render(meshRenderer);
+            renderer.render(scene);
             glfwSwapBuffers(handle);
             glfwPollEvents();
         }
