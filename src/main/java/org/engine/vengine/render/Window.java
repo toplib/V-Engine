@@ -104,11 +104,13 @@ public class Window {
         vertexShader.source(
                 "#version 330 core\n" +
                         "layout (location = 0) in vec3 aPos;\n" +
-                        "layout (location = 1) in vec2 aTexCoord;\n" +
-                        "out vec2 TexCoord;\n" +
+                        "layout (location = 1) in vec2 aTex;\n" +
+                        "\n" +
+                        "out vec2 vTex;\n" +
+                        "\n" +
                         "void main() {\n" +
+                        "    vTex = aTex;\n" +
                         "    gl_Position = vec4(aPos, 1.0);\n" +
-                        "    TexCoord = aTexCoord;\n" +
                         "}\n"
         );
         vertexShader.compile();
@@ -117,10 +119,12 @@ public class Window {
         fragmentShader.source(
                 "#version 330 core\n" +
                         "out vec4 FragColor;\n" +
-                        "in vec2 TexCoord;\n" +
+                        "\n" +
+                        "in vec2 vTex;\n" +
                         "uniform sampler2D ourTexture;\n" +
+                        "\n" +
                         "void main() {\n" +
-                        "    FragColor = texture(ourTexture, TexCoord);\n" +
+                        "    FragColor = texture(ourTexture, vTex);\n" +
                         "}\n"
         );
         fragmentShader.compile();
@@ -141,17 +145,18 @@ public class Window {
 
         // ===== MESH =====
         float[] vertices = {
-                // positions         // texture coords
-                0.5f,  0.5f, 0.0f,   1.0f, 1.0f,
-                0.5f, -0.5f, 0.0f,   1.0f, 0.0f,
-                -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,
-                -0.5f,  0.5f, 0.0f,   0.0f, 1.0f
+                // positions         // tex coords
+                0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+                0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+                -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+                -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left
         };
 
         int[] indices = {
-                0, 1, 3,
-                1, 2, 3
+                0, 1, 2,
+                2, 3, 0
         };
+
 
         Mesh mesh = new Mesh(new MeshData(vertices, indices));
         MeshRenderer meshRenderer = new MeshRenderer(mesh, material);

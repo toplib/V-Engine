@@ -29,6 +29,8 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.lwjgl.stb.STBImage.*;
 
@@ -38,19 +40,25 @@ public class Image {
     private int width;
     private String path;
 
-    public Image(String path){
-        try(MemoryStack stack = MemoryStack.stackPush()){
+    public Image(String path) {
+        stbi_set_flip_vertically_on_load(true);
+
+        try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
-            this.path = path;
-            image = stbi_load(path, w, h, channels, 4);
 
-            if(image == null){
-                throw new RuntimeException("Cannot load image '" + path + "': " + stbi_failure_reason());
+            if (!Files.exists(Path.of(path))) {
+                throw new RuntimeException("Image file not found: " + Path.of(path).toAbsolutePath());
             }
-            int width = w.get();
-            int height = h.get();
+
+            image = stbi_load(path, w, h, channels, 4);
+            if (image == null) {
+                throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
+            }
+
+            width = w.get(0);
+            height = h.get(0);
         }
     }
 
@@ -59,7 +67,7 @@ public class Image {
     }
 
     public int getHeight(){
-        return width;
+        return height;
     }
 
     public void free(){

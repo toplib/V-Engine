@@ -35,35 +35,44 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh {
     public int vao;
+    private int vbo;
+    private int ebo;
     public int indexCount;
-    private MeshData data;
 
     public Mesh(MeshData data) {
-        this.data = data;
+        indexCount = data.getIndices().length;
+
         vao = glGenVertexArrays();
         glBindVertexArray(vao);
 
-        int vbo = glGenBuffers();
+        vbo = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, data.getVertices(), GL_STATIC_DRAW);
 
-        int ebo = glGenBuffers();
+        ebo = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.getIndices(), GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * Float.BYTES, 0);
+        int stride = 5 * Float.BYTES;
+
+        // position
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, 0);
         glEnableVertexAttribArray(0);
 
-        indexCount = data.getIndices().length;
+        // tex coords
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, stride, 3 * Float.BYTES);
+        glEnableVertexAttribArray(1);
+
         glBindVertexArray(0);
     }
 
-    public void free(){
-        glDeleteBuffers(vao);
+    public void free() {
+        glDeleteBuffers(vbo);
+        glDeleteBuffers(ebo);
+        glDeleteVertexArrays(vao);
     }
 }

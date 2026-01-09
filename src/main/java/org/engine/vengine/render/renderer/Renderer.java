@@ -28,20 +28,16 @@ package org.engine.vengine.render.renderer;
 import org.engine.vengine.Scene;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.*;
 
 public class Renderer {
 
     public void render(Scene scene) {
-        for (MeshRenderer mr : scene.renderers){
+        for (MeshRenderer mr : scene.renderers) {
             mr.material.shader.bind();
             glBindVertexArray(mr.mesh.vao);
-            glDrawElements(
-                    GL_TRIANGLES,
-                    mr.mesh.indexCount,
-                    GL_UNSIGNED_INT,
-                    0
-            );
+            glDrawElements(GL_TRIANGLES, mr.mesh.indexCount, GL_UNSIGNED_INT, 0);
         }
+        glBindVertexArray(0);
     }
 }
