@@ -36,6 +36,9 @@ import org.engine.vengine.render.shader.ShaderProgram;
 import org.engine.vengine.texture.Image;
 import org.engine.vengine.texture.Texture;
 import org.engine.vengine.util.Size;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
@@ -99,6 +102,10 @@ public class Window {
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
 
+        // ===== VECTORS =====
+
+        Matrix4f trans = new Matrix4f();
+
         // ===== SHADERS =====
         Shader vertexShader = new Shader(GL_VERTEX_SHADER);
         vertexShader.source(
@@ -107,10 +114,11 @@ public class Window {
                         "layout (location = 1) in vec2 aTex;\n" +
                         "\n" +
                         "out vec2 vTex;\n" +
+                        "uniform mat4 transform;\n" +
                         "\n" +
                         "void main() {\n" +
                         "    vTex = aTex;\n" +
-                        "    gl_Position = vec4(aPos, 1.0);\n" +
+                        "    gl_Position = transform * vec4(aPos, 1.0f);\n" +
                         "}\n"
         );
         vertexShader.compile();
@@ -165,11 +173,13 @@ public class Window {
         scene.renderers.add(meshRenderer);
 
         Renderer renderer = new Renderer();
-
+        trans.translate(new Vector3f(0.5f, -0.5f, 0.0f));
         // ===== LOOP =====
         while (!glfwWindowShouldClose(handle)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            trans.rotate((float) glfwGetTime() / 200, new Vector3f(0.0f, 0.0f, 1.0f));
+            shaderProgram.setMatrix4f("transform", trans);
             texture.bind();
             renderer.render(scene);
 
