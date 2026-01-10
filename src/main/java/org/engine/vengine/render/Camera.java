@@ -23,17 +23,10 @@
  *  SOFTWARE.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine.render;
 
-import org.engine.vengine.mesh.Mesh;
-import org.engine.vengine.render.material.Material;
+import org.joml.Vector3f;
 
-public class MeshRenderer {
-    Mesh mesh;
-    Material material;
+public class Camera {
 
-    public MeshRenderer(Mesh mesh, Material material) {
-        this.mesh = mesh;
-        this.material = material;
-    }
 }

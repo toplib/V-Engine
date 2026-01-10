@@ -23,17 +23,34 @@
  *  SOFTWARE.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine.texture;
 
-import org.engine.vengine.mesh.Mesh;
-import org.engine.vengine.render.material.Material;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
-public class MeshRenderer {
-    Mesh mesh;
-    Material material;
+public class Texture {
+    private int id;
+    private Image image;
 
-    public MeshRenderer(Mesh mesh, Material material) {
-        this.mesh = mesh;
-        this.material = material;
+    public Texture(Image image){
+        id = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, id);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getWidth(), image.getHeight(), 0,
+                GL_RGBA, GL_UNSIGNED_BYTE, image.getImage());
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    public void bind(){
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, id);
+    }
+
+    public void free(){
+        glDeleteTextures(id);
     }
 }

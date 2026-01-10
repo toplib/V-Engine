@@ -23,17 +23,31 @@
  *  SOFTWARE.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine.mesh;
 
-import org.engine.vengine.mesh.Mesh;
-import org.engine.vengine.render.material.Material;
+public class MeshData {
+    private float[] vertices;
+    private int[] indices;
 
-public class MeshRenderer {
-    Mesh mesh;
-    Material material;
-
-    public MeshRenderer(Mesh mesh, Material material) {
-        this.mesh = mesh;
-        this.material = material;
+    public MeshData(float[] vertices, int[] indices){
+        this.vertices = vertices;
+        this.indices = indices;
     }
+
+    public float[] getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(float[] vertices) {
+        this.vertices = vertices;
+    }
+
+    public int[] getIndices() {
+        return indices;
+    }
+
+    public void setIndices(int[] indices) {
+        this.indices = indices;
+    }
+
 }

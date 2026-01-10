@@ -23,17 +23,17 @@
  *  SOFTWARE.
  */
 
-package org.engine.vengine.render.renderer;
+package org.engine.vengine;
 
-import org.engine.vengine.mesh.Mesh;
-import org.engine.vengine.render.material.Material;
+import org.engine.vengine.render.renderer.MeshRenderer;
 
-public class MeshRenderer {
-    Mesh mesh;
-    Material material;
+import java.util.ArrayList;
+import java.util.List;
 
-    public MeshRenderer(Mesh mesh, Material material) {
-        this.mesh = mesh;
-        this.material = material;
+public class Scene {
+    public List<MeshRenderer> renderers;
+
+    public Scene(){
+        this.renderers = new ArrayList<>();
     }
 }

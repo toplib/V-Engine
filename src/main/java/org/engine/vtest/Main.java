@@ -20,6 +20,10 @@ package org.engine.vtest;
 
 import org.engine.vengine.render.Window;
 import org.engine.vengine.render.WindowData;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +37,10 @@ public class Main {
         WindowData data = new WindowData();
         Window window = new Window(data);
 
+        Vector2f a = new Vector2f(4,0);
+        Vector2f b = new Vector2f(0,2);
+
+        System.out.println(Math.sqrt((a.x * a.x) + (b.y * b.y) ));
         window.init();
         window.startRenderLoop();
         window.destroy();
