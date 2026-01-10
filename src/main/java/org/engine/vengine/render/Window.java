@@ -26,6 +26,7 @@
 package org.engine.vengine.render;
 
 import org.engine.vengine.Scene;
+import org.engine.vengine.TestObject;
 import org.engine.vengine.mesh.Mesh;
 import org.engine.vengine.mesh.MeshData;
 import org.engine.vengine.render.material.Material;
@@ -97,96 +98,128 @@ public class Window {
         glfwSwapInterval(1);
     }
 
+    // global variables for camera
+    private float yaw = -90.0f;
+    private float pitch = 0.0f;
+    private float fov = 45.0f;
+
+    private float lastX = 400.0f;
+    private float lastY = 300.0f;
+    private boolean firstMouse = true;
+
+    private Vector3f cameraPos = new Vector3f(0.0f, 0.0f, 3.0f);
+    private Vector3f cameraFront = new Vector3f(0.0f, 0.0f, -1.0f);
+    private final Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
+
     public void startRenderLoop() {
         GL.createCapabilities();
+
         glEnable(GL_DEPTH_TEST);
         glClearColor(0f, 0f, 0f, 1f);
 
-        // ===== VECTORS =====
+        Matrix4f model = new Matrix4f();
+        Matrix4f view = new Matrix4f();
+        Matrix4f projection = new Matrix4f()
+                .perspective((float) Math.toRadians(fov), 800f / 600f, 0.1f, 100f);
 
-        Matrix4f trans = new Matrix4f();
-
-        // ===== SHADERS =====
-        Shader vertexShader = new Shader(GL_VERTEX_SHADER);
-        vertexShader.source(
-                "#version 330 core\n" +
-                        "layout (location = 0) in vec3 aPos;\n" +
-                        "layout (location = 1) in vec2 aTex;\n" +
-                        "\n" +
-                        "out vec2 vTex;\n" +
-                        "uniform mat4 transform;\n" +
-                        "\n" +
-                        "void main() {\n" +
-                        "    vTex = aTex;\n" +
-                        "    gl_Position = transform * vec4(aPos, 1.0f);\n" +
-                        "}\n"
-        );
-        vertexShader.compile();
-
-        Shader fragmentShader = new Shader(GL_FRAGMENT_SHADER);
-        fragmentShader.source(
-                "#version 330 core\n" +
-                        "out vec4 FragColor;\n" +
-                        "\n" +
-                        "in vec2 vTex;\n" +
-                        "uniform sampler2D ourTexture;\n" +
-                        "\n" +
-                        "void main() {\n" +
-                        "    FragColor = texture(ourTexture, vTex);\n" +
-                        "}\n"
-        );
-        fragmentShader.compile();
-
-        ShaderProgram shaderProgram = new ShaderProgram();
-        shaderProgram.attach(vertexShader);
-        shaderProgram.attach(fragmentShader);
-        shaderProgram.link();
-        shaderProgram.bind();
-        shaderProgram.setInt("ourTexture", 0);
-
-        Material material = new Material();
-        material.shader = shaderProgram;
-
-        // ===== TEXTURE =====
-        Image image = new Image("./resources/texture.png");
-        Texture texture = new Texture(image);
-
-        // ===== MESH =====
-        float[] vertices = {
-                // positions         // tex coords
-                0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-                0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-                -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-                -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left
-        };
-
-        int[] indices = {
-                0, 1, 2,
-                2, 3, 0
-        };
-
-
-        Mesh mesh = new Mesh(new MeshData(vertices, indices));
-        MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
+        TestObject to = new TestObject();
 
         Scene scene = new Scene();
-        scene.renderers.add(meshRenderer);
+        scene.renderers.add(to.getMeshRenderer());
 
         Renderer renderer = new Renderer();
-        trans.translate(new Vector3f(0.5f, -0.5f, 0.0f));
-        // ===== LOOP =====
+
+        float deltaTime = 0.0f;
+        float lastFrame = 0.0f;
+
+        // hide and capture cursor
+        glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+        // mouse callback
+        glfwSetCursorPosCallback(handle, (window, xpos, ypos) -> {
+            if (firstMouse) {
+                lastX = (float) xpos;
+                lastY = (float) ypos;
+                firstMouse = false;
+            }
+
+            float xoffset = (float) xpos - lastX;
+            float yoffset = lastY - (float) ypos; // reversed since y-coordinates range bottom-top
+            lastX = (float) xpos;
+            lastY = (float) ypos;
+
+            float sensitivity = 0.1f;
+            xoffset *= sensitivity;
+            yoffset *= sensitivity;
+
+            yaw += xoffset;
+            pitch += yoffset;
+
+            // constrain pitch
+            if (pitch > 89.0f) pitch = 89.0f;
+            if (pitch < -89.0f) pitch = -89.0f;
+
+            // update camera front vector
+            cameraFront.x = (float) (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+            cameraFront.y = (float) Math.sin(Math.toRadians(pitch));
+            cameraFront.z = (float) (Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+            cameraFront.normalize();
+        });
+
+        // scroll callback for zoom
+        glfwSetScrollCallback(handle, (window, xoffset, yoffset) -> {
+            fov -= (float) yoffset;
+            if (fov < 1.0f) fov = 1.0f;
+            if (fov > 45.0f) fov = 45.0f;
+        });
+
         while (!glfwWindowShouldClose(handle)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            trans.rotate((float) glfwGetTime() / 200, new Vector3f(0.0f, 0.0f, 1.0f));
-            shaderProgram.setMatrix4f("transform", trans);
-            texture.bind();
+            float currentFrame = (float) glfwGetTime();
+            deltaTime = currentFrame - lastFrame;
+            lastFrame = currentFrame;
+
+            float cameraSpeed = 2.5f * deltaTime;
+
+            // keyboard movement
+            if (glfwGetKey(handle, GLFW_KEY_W) == GLFW_PRESS) {
+                cameraPos.fma(cameraSpeed, cameraFront); // equivalent to add(cameraFront * speed)
+            }
+            if (glfwGetKey(handle, GLFW_KEY_S) == GLFW_PRESS) {
+                cameraPos.fma(-cameraSpeed, cameraFront);
+            }
+            if (glfwGetKey(handle, GLFW_KEY_A) == GLFW_PRESS) {
+                Vector3f right = new Vector3f(cameraFront).cross(cameraUp).normalize().mul(cameraSpeed);
+                cameraPos.sub(right);
+            }
+            if (glfwGetKey(handle, GLFW_KEY_D) == GLFW_PRESS) {
+                Vector3f right = new Vector3f(cameraFront).cross(cameraUp).normalize().mul(cameraSpeed);
+                cameraPos.add(right);
+            }
+
+            // update view and projection
+            Vector3f cameraTarget = new Vector3f(cameraPos).add(cameraFront);
+            view.identity().lookAt(cameraPos, cameraTarget, cameraUp);
+            projection.identity().perspective((float) Math.toRadians(fov), 800f / 600f, 0.1f, 100f);
+
+            to.getShaderProgram().bind();
+            to.getShaderProgram().setMatrix4f("model", model);
+            to.getShaderProgram().setMatrix4f("view", view);
+            to.getShaderProgram().setMatrix4f("projection", projection);
+
+            glActiveTexture(GL_TEXTURE0);
+            to.getTexture().bind();
+
             renderer.render(scene);
 
             glfwSwapBuffers(handle);
             glfwPollEvents();
         }
     }
+
+
+
 
     public void destroy() {
         glfwFreeCallbacks(handle);
