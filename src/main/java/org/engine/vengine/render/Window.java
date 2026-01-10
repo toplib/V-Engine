@@ -101,7 +101,7 @@ public class Window {
     // global variables for camera
     private float yaw = -90.0f;
     private float pitch = 0.0f;
-    private float fov = 45.0f;
+    private float fov = 80.0f;
 
     private float lastX = 400.0f;
     private float lastY = 300.0f;
