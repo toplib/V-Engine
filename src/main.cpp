@@ -1,7 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <debug/Logger.h>
 
+
+static debug::Logger logger("main");
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
@@ -17,6 +20,10 @@ void processInput(GLFWwindow *window)
 }
 
 int main(){
+  debug::Logger::init("latest.log");
+  logger.info() << "Hello world";
+  logger.warning() << "Hello, warn";
+  logger.error() << "Hello, error";
   // GLFW Init
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

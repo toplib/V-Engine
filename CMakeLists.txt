@@ -32,10 +32,10 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/include/glfw)
 
-# GLM (header-only library, no build configuration needed)
 
 # Add all source files
-file(GLOB SOURCES "src/*.cpp" "src/*.c")
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
+
 add_executable(V-Engine ${SOURCES})
 
 # Add include directories (so the compiler can find your headers)
