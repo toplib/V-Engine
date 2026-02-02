@@ -33,8 +33,15 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/include/glfw)
 
 
-# Add all source files
-file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
+# Add all source files, excluding CMake internal directories
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+    src/*.c
+)
+
+# Remove any file inside src/CMakeFiles
+list(FILTER SOURCES EXCLUDE REGEX ".*/CMakeFiles/.*")
+
 
 add_executable(V-Engine ${SOURCES})
 

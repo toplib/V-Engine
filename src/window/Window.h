@@ -1,0 +1,5 @@
+#pragam once
+
+class Window {
+
+};
