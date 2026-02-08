@@ -1,5 +1,5 @@
-#pragam once
+#pragma once
 
 class Window {
-
+    
 };

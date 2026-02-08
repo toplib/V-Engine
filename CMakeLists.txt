@@ -11,14 +11,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Include directories
+# Include directories for libraries
 include_directories(
     ${PROJECT_SOURCE_DIR}/include/glad/include
     ${PROJECT_SOURCE_DIR}/include/glfw/include
     ${PROJECT_SOURCE_DIR}/include/glm
+    ${PROJECT_SOURCE_DIR}/include
 )
 
-# GLAD
+# GLAD library
 add_library(glad STATIC
     ${PROJECT_SOURCE_DIR}/include/glad/src/glad.c
 )
@@ -32,21 +33,22 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/include/glfw)
 
-
-# Add all source files, excluding CMake internal directories
+# Gather all source files
 file(GLOB_RECURSE SOURCES
     src/*.cpp
     src/*.c
 )
-
-# Remove any file inside src/CMakeFiles
+# Exclude any CMake internal files
 list(FILTER SOURCES EXCLUDE REGEX ".*/CMakeFiles/.*")
 
-
+# Create executable
 add_executable(V-Engine ${SOURCES})
 
-# Add include directories (so the compiler can find your headers)
-target_include_directories(V-Engine PRIVATE src)
+# Include directories for executable
+target_include_directories(V-Engine PRIVATE
+    src
+    ${PROJECT_SOURCE_DIR}/include
+)
 
 # Link libraries
 target_link_libraries(V-Engine
@@ -55,7 +57,7 @@ target_link_libraries(V-Engine
     ${CMAKE_DL_LIBS}
 )
 
-# Platform-specific settings
+# Platform-specific OpenGL linking
 if(WIN32)
     target_link_libraries(V-Engine opengl32)
 elseif(UNIX AND NOT APPLE)
