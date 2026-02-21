@@ -13,18 +13,18 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Include directories for libraries
 include_directories(
-    ${PROJECT_SOURCE_DIR}/include/glad/include
-    ${PROJECT_SOURCE_DIR}/include/glfw/include
-    ${PROJECT_SOURCE_DIR}/include/glm
-    ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/glad/include
+        ${PROJECT_SOURCE_DIR}/include/glfw/include
+        ${PROJECT_SOURCE_DIR}/include/glm
+        ${PROJECT_SOURCE_DIR}/include
 )
 
 # GLAD library
 add_library(glad STATIC
-    ${PROJECT_SOURCE_DIR}/include/glad/src/glad.c
+        ${PROJECT_SOURCE_DIR}/include/glad/src/glad.c
 )
 target_include_directories(glad PUBLIC
-    ${PROJECT_SOURCE_DIR}/include/glad/include
+        ${PROJECT_SOURCE_DIR}/include/glad/include
 )
 
 # GLFW
@@ -33,28 +33,36 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/include/glfw)
 
-# Gather all source files
-file(GLOB_RECURSE SOURCES
-    src/*.cpp
-    src/*.c
+# Gather all source files - CONFIGURE_DEPENDS auto-reloads CMake when files change
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+        ${PROJECT_SOURCE_DIR}/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/*.c
 )
+
 # Exclude any CMake internal files
 list(FILTER SOURCES EXCLUDE REGEX ".*/CMakeFiles/.*")
 
+# Ensure we have at least one source file
+if(NOT SOURCES)
+    message(FATAL_ERROR "No valid source files found in src directory!")
+endif()
+
+set(VALID_SOURCES ${SOURCES})
+
 # Create executable
-add_executable(V-Engine ${SOURCES})
+add_executable(V-Engine ${VALID_SOURCES})
 
 # Include directories for executable
 target_include_directories(V-Engine PRIVATE
-    src
-    ${PROJECT_SOURCE_DIR}/include
+        src
+        ${PROJECT_SOURCE_DIR}/include
 )
 
 # Link libraries
 target_link_libraries(V-Engine
-    glad
-    glfw
-    ${CMAKE_DL_LIBS}
+        glad
+        glfw
+        ${CMAKE_DL_LIBS}
 )
 
 # Platform-specific OpenGL linking

@@ -1,17 +1,15 @@
 #include <glad/glad.h>
-#include "platform/shader/ShaderProgram.h"
+#include "shader/ShaderProgram.h"
 #include <stdexcept>
 #include <vector>
-#include "debug/Logger.h"
+#include <iostream>
 
 namespace Shader {
-
-static debug::Logger logger("ShaderProgram");
 
     ShaderProgram::ShaderProgram() {
         m_id = glCreateProgram();
         if (!m_id) {
-            logger.error() << "Failed to create program object";
+            std::cerr << "Failed to create program object" << std::endl;
             throw std::runtime_error("Failed to create program object");
         }
     }
@@ -50,8 +48,8 @@ static debug::Logger logger("ShaderProgram");
         if (!success) {
             std::vector<char> infoLog(512);
             glGetProgramInfoLog(m_id, infoLog.size(), nullptr, infoLog.data());
-            logger.error() << "Program linking failed:";
-            logger.error() << infoLog.data();
+            std::cerr << "Program linking failed:" << std::endl;
+            std::cerr << infoLog.data() << std::endl;
             throw std::runtime_error(
                 std::string("Program linking failed: ") + infoLog.data()
             );

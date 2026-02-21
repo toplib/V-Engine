@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platform/shader/ShaderType.h"
+#include "shader/ShaderType.h"
 
 namespace Shader {
     class Shader {

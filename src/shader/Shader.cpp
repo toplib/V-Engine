@@ -1,19 +1,17 @@
 #include <glad/glad.h>
-#include "platform/shader/Shader.h"
+#include "shader/Shader.h"
 #include <stdexcept>
 #include <vector>
-#include "debug/Logger.h"
+#include <iostream>
 
 namespace Shader {
-
-static debug::Logger logger("Shader");
 
     Shader::Shader(ShaderType type) : m_type(type) {
         m_id = glCreateShader(
             type == ShaderType::VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER
         );
         if (!m_id) {
-            logger.error() << "Failed to create shader object";
+            std::cerr << "Failed to create shader object" << std::endl;
             throw std::runtime_error("Failed to create shader object");
         }
     }
@@ -52,8 +50,8 @@ static debug::Logger logger("Shader");
         if (!success) {
             std::vector<char> infoLog(512);
             glGetShaderInfoLog(m_id, infoLog.size(), nullptr, infoLog.data());
-            logger.error() << "Shader compilation failed:";
-            logger.error() << infoLog.data();
+            std::cerr << "Shader compilation failed:" << std::endl;
+            std::cerr << infoLog.data() << std::endl;
             throw std::runtime_error(
                 std::string("Shader compilation failed: ") + infoLog.data()
             );
