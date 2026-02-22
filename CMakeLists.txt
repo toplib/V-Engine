@@ -47,7 +47,11 @@ if(NOT SOURCES)
     message(FATAL_ERROR "No valid source files found in src directory!")
 endif()
 
-set(VALID_SOURCES ${SOURCES})
+set(VALID_SOURCES ${SOURCES}
+        src/parser/obj/OBJParser.cpp
+        src/parser/obj/OBJParser.h
+        src/window/InputType.h
+)
 
 # Create executable
 add_executable(V-Engine ${VALID_SOURCES})

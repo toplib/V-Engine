@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <vector>
 
-namespace vengine {
+namespace Mesh {
 
 struct Vertex {
     float position[3];
@@ -37,4 +37,4 @@ private:
     bool m_built = false;
 };
 
-}
+} // namespace Mesh

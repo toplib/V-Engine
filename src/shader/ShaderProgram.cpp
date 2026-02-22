@@ -60,4 +60,11 @@ namespace Shader {
     void ShaderProgram::use() const {
         glUseProgram(m_id);
     }
+
+    unsigned int ShaderProgram::getUniformLocation(std::string name) {
+        return glGetUniformLocation(m_id, name.c_str());
+    }
+    void ShaderProgram::setUnformMatrix4(unsigned int transformLoc, glm::mat4 matrix) {
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 }

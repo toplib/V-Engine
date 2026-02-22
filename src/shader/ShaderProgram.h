@@ -1,6 +1,10 @@
 #pragma once
 
 #include "shader/Shader.h"
+#include <string>
+
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Shader {
 
@@ -18,6 +22,9 @@ namespace Shader {
         void attach(const Shader& shader);
         bool link();
         void use() const;
+
+        unsigned int getUniformLocation(std::string name);
+        void setUnformMatrix4(unsigned int transformLoc, glm::mat4 matrix);
 
         unsigned int id() const { return m_id; }
 
