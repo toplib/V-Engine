@@ -37,13 +37,10 @@ void Mesh::build() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
     glEnableVertexAttribArray(0);
 
-    // Color attribute (location 1)
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-    glEnableVertexAttribArray(1);
 
     // Texture coord attribute (location 2)
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
+    glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
 
@@ -59,7 +56,7 @@ void Mesh::unbind() const {
 }
 
 void Mesh::draw() const {
-    glDrawElements(GL_TRIANGLES, static_cast<int>(m_indices.size()), GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(m_vertices.size()));
 }
 
 void Mesh::cleanup() {

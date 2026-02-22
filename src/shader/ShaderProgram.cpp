@@ -61,10 +61,39 @@ namespace Shader {
         glUseProgram(m_id);
     }
 
-    unsigned int ShaderProgram::getUniformLocation(std::string name) {
-        return glGetUniformLocation(m_id, name.c_str());
+    int ShaderProgram::getUniformLocation(const std::string& name) {
+        if (auto it = m_uniformLocationCache.find(name); it != m_uniformLocationCache.end()) {
+            return it->second;
+        }
+
+        const int location = glGetUniformLocation(m_id, name.c_str());
+        if (location == -1) {
+            std::cerr << "Uniform '" << name << "' not found" << std::endl;
+        }
+
+        m_uniformLocationCache.emplace(name, location);
+        return location;
     }
-    void ShaderProgram::setUnformMatrix4(unsigned int transformLoc, glm::mat4 matrix) {
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+
+    void ShaderProgram::setUniformMatrix4(int location, const glm::mat4& matrix) {
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    void ShaderProgram::setUniformMatrix4(const std::string& name, const glm::mat4& matrix) {
+        const int location = getUniformLocation(name);
+        if (location != -1) {
+            setUniformMatrix4(location, matrix);
+        }
+    }
+
+    void ShaderProgram::setUniform1i(int location, int value) {
+        glUniform1i(location, value);
+    }
+
+    void ShaderProgram::setUniform1i(const std::string& name, int value) {
+        const int location = getUniformLocation(name);
+        if (location != -1) {
+            setUniform1i(location, value);
+        }
     }
 }

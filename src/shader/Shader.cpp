@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 namespace Shader {
 
@@ -40,6 +42,26 @@ namespace Shader {
 
     void Shader::source(const char* source) {
         glShaderSource(m_id, 1, &source, nullptr);
+    }
+
+    void Shader::source(const std::string& source) {
+        const char* src = source.c_str();
+        glShaderSource(m_id, 1, &src, nullptr);
+    }
+
+    void Shader::sourceFromFile(const std::string& path) {
+        std::ifstream file(path, std::ios::binary);
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open shader file: " + path);
+        }
+
+        std::ostringstream ss;
+        ss << file.rdbuf();
+        if (file.fail() && !file.eof()) {
+            throw std::runtime_error("Failed to read shader file: " + path);
+        }
+
+        source(ss.str());
     }
 
     bool Shader::compile() {

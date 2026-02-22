@@ -2,6 +2,8 @@
 
 #include "shader/ShaderType.h"
 
+#include <string>
+
 namespace Shader {
     class Shader {
     public:
@@ -15,6 +17,9 @@ namespace Shader {
         Shader& operator=(Shader&& other) noexcept;
 
         void source(const char* source);
+        void source(const std::string& source);
+
+        void sourceFromFile(const std::string& path);
         bool compile();
         unsigned int id() const { return m_id; }
 

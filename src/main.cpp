@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
-#include "test.h"
 #include "shader/Shader.h"
 #include "shader/ShaderType.h"
 #include "shader/ShaderProgram.h"
@@ -16,13 +15,18 @@
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
-
-
 int main()
 {
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
     trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
 
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
@@ -33,16 +37,59 @@ int main()
 
     // Create mesh with vertex data
     std::vector<Mesh::Vertex> vertices = {
-        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},   // top right
-        {{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},   // bottom right
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},   // bottom left
-        {{-0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}}    // top left
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
+
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
+
+        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 1.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}}
     };
 
+
+
     std::vector<unsigned int> indices = {
-        0, 1, 3,  // first triangle
-        1, 2, 3   // second triangle
-    };
+        0,  1,  2,  3,  4,  5,
+        6,  7,  8,  9, 10, 11,
+       12, 13, 14, 15, 16, 17,
+       18, 19, 20, 21, 22, 23,
+       24, 25, 26, 27, 28, 29,
+       30, 31, 32, 33, 34, 35
+   };
 
     Mesh::Mesh mesh;
     mesh.setVertices(vertices);
@@ -59,16 +106,15 @@ int main()
     Shader::Shader vertexShader(Shader::ShaderType::VERTEX);
     Shader::Shader fragmentShader(Shader::ShaderType::FRAGMENT);
 
-    vertexShader.source(loadVertexShader());
-    fragmentShader.source(loadFragmentShader());
-
     try {
-        if (!vertexShader.compile() || !fragmentShader.compile()) {
-            std::cerr << "Cannot compile shaders" << std::endl;
-            return -1;
-        }
-    } catch (char* str) {
-        std::cerr << "Shader compilation exception: " << str << std::endl;
+        vertexShader.sourceFromFile("/home/toplib/V-Engine/vertex.glsl");
+        fragmentShader.sourceFromFile("/home/toplib/V-Engine/fragment.glsl");
+
+        vertexShader.compile();
+        fragmentShader.compile();
+    } catch (const std::exception& e) {
+        std::cerr << "Shader compilation exception: " << e.what() << std::endl;
+        return -1;
     }
 
     Shader::ShaderProgram shaderProgram;
@@ -76,27 +122,40 @@ int main()
     shaderProgram.attach(fragmentShader);
 
     try {
-        if (!shaderProgram.link()) {
-            std::cerr << "Cannot link shader program" << std::endl;
-            return -1;
-        }
-    } catch (char* str) {
-        std::cerr << "Shader linking exception: " << str << std::endl;
+        shaderProgram.link();
+    } catch (const std::exception& e) {
+        std::cerr << "Shader linking exception: " << e.what() << std::endl;
+        return -1;
     }
 
-    unsigned int transformLoc = shaderProgram.getUniformLocation("transform");
-    shaderProgram.setUnformMatrix4(transformLoc, trans);
+    const int modelLoc = shaderProgram.getUniformLocation("model");
+    const int viewLoc = shaderProgram.getUniformLocation("view");
+    const int projectionLoc = shaderProgram.getUniformLocation("projection");
+    const int textureLoc = shaderProgram.getUniformLocation("ourTexture");
+
+    shaderProgram.use();
+    if (textureLoc != -1) {
+        shaderProgram.setUniform1i(textureLoc, 0);
+    }
+    
     // Render loop
     while (!window.shouldClose()) {
+        glEnable(GL_DEPTH_TEST);
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
         }
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        texture.bind();
         shaderProgram.use();
+
+        model = glm::rotate(model, (float)(glfwGetTime() / 100) * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        
+        if (modelLoc != -1) shaderProgram.setUniformMatrix4(modelLoc, model);
+        if (viewLoc != -1) shaderProgram.setUniformMatrix4(viewLoc, view);
+        if (projectionLoc != -1) shaderProgram.setUniformMatrix4(projectionLoc, proj);
+        texture.bind();
         mesh.bind();
         mesh.draw();
         mesh.unbind();

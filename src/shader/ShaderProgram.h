@@ -2,6 +2,7 @@
 
 #include "shader/Shader.h"
 #include <string>
+#include <unordered_map>
 
 #include "glm/glm.hpp"
 #include <glm/gtc/type_ptr.hpp>
@@ -23,12 +24,19 @@ namespace Shader {
         bool link();
         void use() const;
 
-        unsigned int getUniformLocation(std::string name);
-        void setUnformMatrix4(unsigned int transformLoc, glm::mat4 matrix);
+        // Returns -1 if the uniform is not found.
+        int getUniformLocation(const std::string& name);
+
+        void setUniformMatrix4(int location, const glm::mat4& matrix);
+        void setUniformMatrix4(const std::string& name, const glm::mat4& matrix);
+
+        void setUniform1i(int location, int value);
+        void setUniform1i(const std::string& name, int value);
 
         unsigned int id() const { return m_id; }
 
     private:
         unsigned int m_id{};
+        std::unordered_map<std::string, int> m_uniformLocationCache{};
     };
 }
