@@ -1,8 +1,9 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include "InputType.h"
 
-namespace vengine {
+namespace Window {
 
 class Window {
 public:
@@ -26,6 +27,8 @@ public:
     static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
     bool isInitialized() const { return m_initialized; }
+
+    Input::InputType getKey(int keyCode);
 
 private:
     int m_width;
