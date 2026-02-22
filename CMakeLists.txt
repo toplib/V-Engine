@@ -51,6 +51,10 @@ set(VALID_SOURCES ${SOURCES}
         src/parser/obj/OBJParser.cpp
         src/parser/obj/OBJParser.h
         src/window/InputType.h
+        src/scene/Scene.h
+        src/renderer/MeshRenderer.h
+        src/core/Transform.h
+        src/core/Transform.cpp
 )
 
 # Create executable
