@@ -55,6 +55,8 @@ set(VALID_SOURCES ${SOURCES}
         src/renderer/MeshRenderer.h
         src/core/Transform.h
         src/core/Transform.cpp
+        src/camera/Camera.h
+        src/camera/Camera.cpp
 )
 
 # Create executable

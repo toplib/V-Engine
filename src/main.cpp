@@ -12,6 +12,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "camera/Camera.h"
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
@@ -20,12 +22,9 @@ int main()
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
     trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-    glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 100.0f);
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
 
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
@@ -137,7 +136,7 @@ int main()
     if (textureLoc != -1) {
         shaderProgram.setUniform1i(textureLoc, 0);
     }
-    
+    Camera::Camera camera(SCR_WIDTH, SCR_HEIGHT, 40.0f, 100.0f, 0.01f,{{0.0f, 0.0f, -5.0f}, {0.0f, 130.0f, 0.0f}, {1.0, 1.0f, 1.0f}});
     // Render loop
     while (!window.shouldClose()) {
         glEnable(GL_DEPTH_TEST);
@@ -150,11 +149,9 @@ int main()
 
         shaderProgram.use();
 
-        model = glm::rotate(model, (float)(glfwGetTime() / 100) * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-        
         if (modelLoc != -1) shaderProgram.setUniformMatrix4(modelLoc, model);
-        if (viewLoc != -1) shaderProgram.setUniformMatrix4(viewLoc, view);
-        if (projectionLoc != -1) shaderProgram.setUniformMatrix4(projectionLoc, proj);
+        if (viewLoc != -1) shaderProgram.setUniformMatrix4(viewLoc, camera.getViewMatrix());
+        if (projectionLoc != -1) shaderProgram.setUniformMatrix4(projectionLoc, camera.getProjectionMatrix());
         texture.bind();
         mesh.bind();
         mesh.draw();

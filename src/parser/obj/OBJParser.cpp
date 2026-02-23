@@ -15,7 +15,6 @@ namespace Parser {
         std::string line;
         
         Mesh::Mesh mesh;
-
         return mesh;
     }
 

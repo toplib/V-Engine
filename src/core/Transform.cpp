@@ -26,4 +26,25 @@ namespace Transform {
         model = glm::scale(model, m_scale);
         return model;
     }
+
+    glm::vec3 Transform::getPosition() {
+        return m_position;
+    }
+    glm::vec3 Transform::getRotation() {
+        return m_rotation;
+    }
+    glm::vec3 Transform::getScale() {
+        return m_scale;
+    }
+
+
+    void Transform::setPosition(glm::vec3 position) {
+        m_position = position;
+    }
+    void Transform::setRotation(glm::vec3 rotation) {
+        m_rotation = rotation;
+    }
+    void Transform::setScale(glm::vec3 scale) {
+        m_scale = scale;
+    }
 }
