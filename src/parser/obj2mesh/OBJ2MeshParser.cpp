@@ -1,15 +1,15 @@
-#include "OBJParser.h"
+#include "OBJ2MeshParser.h"
 
 namespace Parser {
 
-    OBJParser::OBJParser() = default;
-    OBJParser::~OBJParser() = default;
+    OBJ2MeshParser::OBJ2MeshParser() = default;
+    OBJ2MeshParser::~OBJ2MeshParser() = default;
 
-    void OBJParser::source(std::string* source) {
+    void OBJ2MeshParser::source(std::string* source) {
         m_source = *source;
     }
 
-    Mesh::Mesh OBJParser::parse() {
+    Mesh::Mesh OBJ2MeshParser::parse() {
         std::vector<std::string> lines;
         std::istringstream stream(m_source);
         std::string line;

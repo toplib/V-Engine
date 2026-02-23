@@ -48,8 +48,8 @@ if(NOT SOURCES)
 endif()
 
 set(VALID_SOURCES ${SOURCES}
-        src/parser/obj/OBJParser.cpp
-        src/parser/obj/OBJParser.h
+        src/parser/obj2mesh/OBJ2MeshParser.cpp
+        src/parser/obj2mesh/OBJ2MeshParser.h
         src/window/InputType.h
         src/scene/Scene.h
         src/renderer/MeshRenderer.h

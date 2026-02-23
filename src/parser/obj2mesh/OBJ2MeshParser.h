@@ -5,10 +5,10 @@
 #include "mesh/Mesh.h"
 
 namespace Parser {
-    class OBJParser {
+    class OBJ2MeshParser {
     public:
-        OBJParser();
-        ~OBJParser();
+        OBJ2MeshParser();
+        ~OBJ2MeshParser();
 
         void source(std::string* source);
         Mesh::Mesh parse();
