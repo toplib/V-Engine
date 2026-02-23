@@ -57,6 +57,7 @@ set(VALID_SOURCES ${SOURCES}
         src/core/Transform.cpp
         src/camera/Camera.h
         src/camera/Camera.cpp
+        src/utils/StringUtils.h
 )
 
 # Create executable

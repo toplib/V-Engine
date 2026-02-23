@@ -8,6 +8,7 @@ namespace Mesh {
 struct Vertex {
     float position[3];
     float texCoord[2];
+    float normal[3]; // TODO: Finish normal implementing
 };
 
 class Mesh {

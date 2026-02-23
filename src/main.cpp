@@ -13,7 +13,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "test.h"
 #include "camera/Camera.h"
+#include "parser/obj2mesh/OBJ2MeshParser.h"
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
@@ -25,7 +27,11 @@ int main()
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
+    Parser::OBJ2MeshParser parser;
+    std::string source = loadShaderFromPath("/home/toplib/V-Engine/res/cube.obj"); // TODO: Implement normal assets system
+    parser.source(&source);
 
+    parser.parse();
 
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
@@ -136,7 +142,7 @@ int main()
     if (textureLoc != -1) {
         shaderProgram.setUniform1i(textureLoc, 0);
     }
-    Camera::Camera camera(SCR_WIDTH, SCR_HEIGHT, 40.0f, 100.0f, 0.01f,{{0.0f, 0.0f, -5.0f}, {0.0f, 130.0f, 0.0f}, {1.0, 1.0f, 1.0f}});
+    Camera::Camera camera(SCR_WIDTH, SCR_HEIGHT, 40.0f, 100.0f, 0.01f,{{0.0f, 0.0f, -5.0f}, {0.0f, 2.0f, 0.0f}, {1.0, 1.0f, 1.0f}});
     // Render loop
     while (!window.shouldClose()) {
         glEnable(GL_DEPTH_TEST);
