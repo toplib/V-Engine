@@ -1,3 +1,4 @@
 - [ ] Implement assets system and make paths local
 - [ ] Implement OBJ2Mesh parser *(in progress)*
 - [ ] Implement simple lighting
+- [ ] Separate object drawing from Mesh to Renderer
