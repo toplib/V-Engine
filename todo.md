@@ -1,48 +1,41 @@
-- [ ] Implement assets system and make paths local
-  - [ ] Create resource path resolver (relative to executable)
-  - [ ] Replace hardcoded paths in main.cpp (lines 31, 50, 59-60)
-  - [ ] Update parser and texture loaders to use asset system
+- [ ] Fix critical bugs that cause crashes or wrong output
+  - [ ] Fix memory leak in test.h - loadShaderFromPath returns new char[] that is never deleted
+  - [ ] Fix normals not loaded from OBJ vn tokens in OBJ2MeshParser (ivn is computed but thrown away)
+  - [ ] Fix out-of-bounds crash when vt index is -1 in OBJ2MeshParser (m_vertexTextures[-1] is UB)
+  - [ ] Fix wrong normal attribute size in Mesh::build() - uses 2 instead of 3 components
+  - [ ] Fix missing draw call between mesh.bind() and mesh.unbind() in main.cpp (nothing is rendered)
+  - [ ] Fix Renderer copies entire scene every frame causing GPU use-after-free (getGameObjects returns by value, copies Mesh with OpenGL handles)
 
-- [x] Implement OBJ2Mesh parser
-  - [ ] Fix normals parsing bug - normals not loaded from OBJ vn tokens
-  - [ ] Add proper polygon triangulation for n-gons (>4 vertices)
+- [ ] Fix high priority design flaws
+  - [ ] Implement assets system - remove all hardcoded absolute paths in main.cpp and test.h
+  - [ ] Replace all std::cerr/cout with Logger (Logger is unused, add to Window, Shader, ShaderProgram, OBJ2MeshParser)
+  - [ ] Add delta-time to game loop for frame-rate independent movement
+  - [ ] Move camera controls from main.cpp into Camera class with update(float deltaTime)
+  - [ ] Remove duplicate getGameObjects() methods in Scene class
+  - [ ] Fix all getters to return const references instead of copies (GameObject::getMeshRenderer, GameObject::getTransform, MeshRenderer::getMesh, MeshRenderer::getMaterial, Transform getters)
+  - [ ] Fix Material stores raw owning pointer to ShaderProgram - use shared_ptr or document ownership
+  - [ ] Fix Window stores const char* title causing dangling pointer risk
+  - [ ] Fix Camera constructors duplicate 90% of code - use delegating constructors or single constructor
+  - [ ] Fix OBJ2MeshParser::source() takes pointer instead of const reference
+  - [ ] Fix N-gon triangulation broken in OBJ2MeshParser (5+ vertex polygons silently dropped)
+  - [ ] Fix Renderer takes Scene by value causing expensive copy
+  - [ ] Fix double glfwTerminate() in Window shutdown (called in destructor and explicitly)
+  - [ ] Remove duplicate isKeyPressed()/getKey() methods in Window class
+  - [ ] Fix LoggingType enum unused - delete or integrate with Logger
+  - [ ] Fix missing #include in StringUtils.h (<vector> and <sstream>)
 
-- [ ] Implement simple lighting
-  - [ ] Update vertex shader to include normal attributes
-  - [ ] Update fragment shader with basic diffuse/specular lighting
-  - [ ] Pass light uniforms (position, color, intensity)
-  - [ ] Calculate lighting in fragment shader
+- [ ] Implement medium priority architecture improvements
+  - [ ] Wire up Renderer class in main.cpp instead of manual draw calls
+  - [ ] Separate object drawing from Mesh to Renderer
+  - [ ] Implement simple lighting - add normal attributes to shaders and calculate diffuse/specular
+  - [ ] Add component lifecycle system with Start() and Update() methods
+  - [ ] Add mouse look support to Camera class
 
-- [ ] Separate object drawing from Mesh to Renderer
-  - [ ] Move manual draw calls from main.cpp to Renderer class
-  - [ ] Use Scene::getGameObjects() in render loop
-  - [ ] Apply transform matrices from GameObject
-
-- [ ] Make logger *(in progress)*
-  - [ ] Replace all std::cerr/cout with Logger in main.cpp
-  - [ ] Add Logger to Window class for initialization errors
-  - [ ] Add Logger to Shader compilation/linking
-  - [ ] Add Logger to OBJ2MeshParser for parsing errors
-
-- [ ] Add polygon triangulating for OBJ2Mesh parser
-  - [ ] Handle n-gons (5+ vertices) with proper ear clipping
-  - [ ] Currently only quads (4 vertices) are triangulated
-
-- [ ] Refactor camera controls
-  - [ ] Move WASD movement from main.cpp to Camera class
-  - [ ] Add update(float deltaTime) method to Camera
-  - [ ] Add mouse look support
-
-- [ ] Fix RAII issues
-  - [ ] GameObject::getMeshRenderer() - return by const reference
-  - [ ] MeshRenderer::getMesh() - return by const reference
-  - [ ] Scene::getGameObjects() - return by const reference
-
-- [ ] Cleanup Scene class
-  - [ ] Remove duplicate getGameObjects() method
-  - [ ] Keep only reference-returning version
-
-- [ ] Add component lifecycle system
-  - [ ] Add virtual Update() method to components
-  - [ ] Add Start() lifecycle method
-  - [ ] Create main game loop with deltaTime
+- [ ] Fix low priority code style issues
+  - [ ] Fix wrong namespace comment in Window.h (says vengine instead of Window)
+  - [ ] Fix #define GLM_ENABLE_EXPERIMENTAL in header file - move to CMakeLists.txt
+  - [ ] Fix != false redundant comparison in Renderer.cpp
+  - [ ] Fix unused #include <ostream> in Camera.cpp
+  - [ ] Fix signed/unsigned loop index in OBJ2MeshParser (use size_t)
+  - [ ] Fix wrong cleanup order in Mesh (should delete VAO before buffers)
+  - [ ] Fix fixed 512-byte shader info log buffer truncation issue
