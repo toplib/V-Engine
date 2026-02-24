@@ -16,11 +16,13 @@
 #include "test.h"
 #include "camera/Camera.h"
 #include "parser/obj2mesh/OBJ2MeshParser.h"
+#include "debug/Logger.h"
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
 int main()
 {
+    Debug::Logger logger("main");
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
     trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
@@ -28,10 +30,9 @@ int main()
     model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
     Parser::OBJ2MeshParser parser;
-    std::string source = loadShaderFromPath("/home/toplib/V-Engine/res/cube.obj"); // TODO: Implement normal assets system
+    std::string source = loadShaderFromPath("/home/toplib/V-Engine/res/hazmat.obj"); // TODO: Implement normal assets system
     parser.source(&source);
 
-    parser.parse();
 
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
@@ -42,47 +43,47 @@ int main()
 
     // Create mesh with vertex data
     std::vector<Mesh::Vertex> vertices = {
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
-        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
-        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
 
-        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}},
-        {{-0.5f,  0.5f,  0.5f}, {0.0f, 1.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
 
-        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{-0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
-        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
 
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
 
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 1.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}},
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
 
-        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f}},
-        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}}
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f}, {0.0f, 0.0f}},
+        {{-0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}, {0.0f, 0.0f}}
     };
 
 
@@ -97,13 +98,14 @@ int main()
    };
 
     Mesh::Mesh mesh;
-    mesh.setVertices(vertices);
-    mesh.setIndices(indices);
+    mesh = parser.parse();
+    //mesh.setVertices(vertices);
+    //mesh.setIndices(indices);
     mesh.build();
 
     // Load texture
     Texture::Texture texture;
-    if (!texture.load("/home/toplib/V-Engine/res/texture.jpg")) {
+    if (!texture.load("/home/toplib/V-Engine/res/hazmat.jpg")) {
         std::cerr << "Failed to load texture" << std::endl;
     }
 
@@ -142,12 +144,31 @@ int main()
     if (textureLoc != -1) {
         shaderProgram.setUniform1i(textureLoc, 0);
     }
-    Camera::Camera camera(SCR_WIDTH, SCR_HEIGHT, 40.0f, 100.0f, 0.01f,{{0.0f, 0.0f, -5.0f}, {0.0f, 2.0f, 0.0f}, {1.0, 1.0f, 1.0f}});
+    Camera::Camera camera(SCR_WIDTH, SCR_HEIGHT, 40.0f, 100.0f, 0.01f,
+        {
+            {0.0f, 0.0f, -5.0f},
+            glm::quat(glm::vec3(0.0f)),
+            {1.0, 1.0f, 1.0f}
+        });
     // Render loop
+    glEnable(GL_DEPTH_TEST);
     while (!window.shouldClose()) {
-        glEnable(GL_DEPTH_TEST);
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
+        }
+
+        // TODO: Move to camera control class
+        if (window.getKey(GLFW_KEY_W) == Input::InputType::PRESS) {
+            camera.moveForward(0.04f);
+        }
+        if (window.getKey(GLFW_KEY_S) == Input::InputType::PRESS) {
+            camera.moveForward(-0.04f);
+        }
+        if (window.getKey(GLFW_KEY_A) == Input::InputType::PRESS) {
+            camera.moveRight(-0.04f);
+        }
+        if (window.getKey(GLFW_KEY_D) == Input::InputType::PRESS) {
+            camera.moveRight(0.04f);
         }
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);

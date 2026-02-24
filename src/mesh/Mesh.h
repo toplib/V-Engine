@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <vector>
+#include "glm/gtc/quaternion.hpp"
 
 namespace Mesh {
 

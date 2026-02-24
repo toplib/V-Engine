@@ -75,6 +75,15 @@ bool Window::isKeyPressed(int key) const {
 Input::InputType Window::getKey(int keyCode) {
     return glfwGetKey(m_window, keyCode) == GLFW_PRESS ? Input::InputType::PRESS : Input::InputType::RELEASE;
 }
+Input::InputType Window::getMouseButton(int button) const {
+    return glfwGetMouseButton(m_window, button) == GLFW_PRESS
+        ? Input::InputType::PRESS
+        : Input::InputType::RELEASE;
+}
+
+void Window::getCursorPos(double& x, double& y) const {
+    glfwGetCursorPos(m_window, &x, &y);
+}
 void Window::framebufferSizeCallback(GLFWwindow* glfwWindow, int width, int height) {
     Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
     if (window) {

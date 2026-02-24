@@ -29,6 +29,8 @@ public:
     bool isInitialized() const { return m_initialized; }
 
     Input::InputType getKey(int keyCode);
+    Input::InputType getMouseButton(int button) const;
+    void getCursorPos(double& x, double& y) const;
 
 private:
     int m_width;

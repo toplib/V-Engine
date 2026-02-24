@@ -42,21 +42,11 @@ namespace Camera {
         m_view = glm::lookAt(m_transform.getPosition(), m_transform.getPosition() + m_forward, m_up);
     }
 
-    void Camera::calculate()
-    {
-        float pitch = glm::radians(m_transform.getRotation().x);
-        float yaw = glm::radians(m_transform.getRotation().y);
+    void Camera::calculate() {
+        glm::quat rotation = m_transform.getRotation();
+        m_forward = glm::normalize(rotation * glm::vec3(0.0f, 0.0f, 1.0f));
 
-        // Forward
-        m_forward.x = cos(pitch) * sin(yaw);
-        m_forward.y = sin(pitch);
-        m_forward.z = cos(pitch) * cos(yaw);
-        m_forward = glm::normalize(m_forward);
-
-        // World up
         glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
-
-        // Right and up
         m_right = glm::normalize(glm::cross(m_forward, worldUp));
         m_up = glm::normalize(glm::cross(m_right, m_forward));
     }
@@ -74,6 +64,8 @@ namespace Camera {
     }
     void Camera::setTransform(Transform::Transform transform) {
         m_transform = transform;
+        calculate();
+        updateViewMatrix();
     }
 
     glm::mat4 Camera::getProjectionMatrix() {

@@ -38,9 +38,13 @@ void Mesh::build() {
     glEnableVertexAttribArray(0);
 
 
-    // Texture coord attribute (location 2)
+    // Texture coord attribute (location 1)
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
     glEnableVertexAttribArray(1);
+
+    // Texture coord attribute (location 2)
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+    glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
 

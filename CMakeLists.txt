@@ -58,6 +58,9 @@ set(VALID_SOURCES ${SOURCES}
         src/camera/Camera.h
         src/camera/Camera.cpp
         src/utils/StringUtils.h
+        src/debug/Logger.h
+        src/debug/LoggingType.h
+        src/debug/Logger.cpp
 )
 
 # Create executable

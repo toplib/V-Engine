@@ -1,4 +1,6 @@
 - [ ] Implement assets system and make paths local
-- [ ] Implement OBJ2Mesh parser *(in progress)*
+- [x] Implement OBJ2Mesh parser 
 - [ ] Implement simple lighting
 - [ ] Separate object drawing from Mesh to Renderer
+- [ ] Make logger *(in progress)*
+- [ ] Add polygon triangulating for OBJ2Mesh parser

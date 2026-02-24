@@ -22,7 +22,7 @@ namespace Parser {
         struct Normal {
             float x, y, z;
         };
-        struct Vertice {
+        struct Index {
             Vertex vertex;
             VertexTexture texture;
             Normal normal;
@@ -30,6 +30,8 @@ namespace Parser {
         std::string m_source;
         std::vector<Vertex> m_vertices;
         std::vector<VertexTexture> m_vertexTextures;
+        std::vector<Normal> m_normals;
+        std::vector<Index> m_indexes;
         std::vector<unsigned int> m_indices;
 
         void build(Mesh::Mesh& mesh);
