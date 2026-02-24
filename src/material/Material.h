@@ -8,7 +8,10 @@ namespace Material {
         ~Material();
 
         void setShader(Shader::ShaderProgram* shaderProgram);
-        void use() const;
+
+        Shader::ShaderProgram* getShader();
+        void bind() const;
+        void unbind() const;
 
     private:
         Shader::ShaderProgram* m_shaderProgram = nullptr;

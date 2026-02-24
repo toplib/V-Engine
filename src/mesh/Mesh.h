@@ -9,7 +9,7 @@ namespace Mesh {
 struct Vertex {
     float position[3];
     float texCoord[2];
-    float normal[3]; // TODO: Finish normal implementing
+    float normal[3];
 };
 
 class Mesh {
@@ -19,11 +19,12 @@ public:
 
     void setVertices(const std::vector<Vertex>& vertices);
     void setIndices(const std::vector<unsigned int>& indices);
+
+    std::vector<Vertex> getVertices();
     
     void build();
     void bind() const;
     void unbind() const;
-    void draw() const;
     
     void cleanup();
 

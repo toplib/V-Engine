@@ -57,8 +57,11 @@ namespace Shader {
         return true;
     }
 
-    void ShaderProgram::use() const {
+    void ShaderProgram::bind() const {
         glUseProgram(m_id);
+    }
+    void ShaderProgram::unbind() const {
+        glUseProgram(0);
     }
 
     int ShaderProgram::getUniformLocation(const std::string& name) {

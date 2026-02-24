@@ -22,7 +22,8 @@ namespace Shader {
 
         void attach(const Shader& shader);
         bool link();
-        void use() const;
+        void bind() const;
+        void unbind() const;
 
         // Returns -1 if the uniform is not found.
         int getUniformLocation(const std::string& name);

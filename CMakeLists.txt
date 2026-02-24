@@ -65,6 +65,8 @@ set(VALID_SOURCES ${SOURCES}
         src/gameobject/GameObject.h
         src/gameobject/GameObject.cpp
         src/scene/Scene.cpp
+        src/rendering/Renderer.h
+        src/rendering/Renderer.cpp
 )
 
 # Create executable

@@ -82,7 +82,7 @@ int main()
     const int projectionLoc = shaderProgram.getUniformLocation("projection");
     const int textureLoc = shaderProgram.getUniformLocation("ourTexture");
 
-    shaderProgram.use();
+    shaderProgram.bind();
     if (textureLoc != -1) {
         shaderProgram.setUniform1i(textureLoc, 0);
     }
@@ -116,14 +116,13 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shaderProgram.use();
+        shaderProgram.bind();
 
         if (modelLoc != -1) shaderProgram.setUniformMatrix4(modelLoc, model);
         if (viewLoc != -1) shaderProgram.setUniformMatrix4(viewLoc, camera.getViewMatrix());
         if (projectionLoc != -1) shaderProgram.setUniformMatrix4(projectionLoc, camera.getProjectionMatrix());
         texture.bind();
         mesh.bind();
-        mesh.draw();
         mesh.unbind();
 
         window.swapBuffers();

@@ -12,9 +12,15 @@ void Mesh::setVertices(const std::vector<Vertex>& vertices) {
     m_vertices = vertices;
 }
 
+std::vector<Vertex> Mesh::getVertices() {
+    return m_vertices;
+}
+
+
 void Mesh::setIndices(const std::vector<unsigned int>& indices) {
     m_indices = indices;
 }
+
 
 void Mesh::build() {
     if (m_built) {
@@ -59,9 +65,6 @@ void Mesh::unbind() const {
     glBindVertexArray(0);
 }
 
-void Mesh::draw() const {
-    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(m_vertices.size()));
-}
 
 void Mesh::cleanup() {
     if (VBO != 0) {

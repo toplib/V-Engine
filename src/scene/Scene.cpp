@@ -11,4 +11,8 @@ namespace Scene {
     std::vector<GameObject::GameObject> Scene::getGameObjects() {
         return m_gameObjects;
     }
+
+    void Scene::getGameObjects(std::vector<GameObject::GameObject>& gameObjects) {
+        gameObjects = m_gameObjects;
+    }
 }

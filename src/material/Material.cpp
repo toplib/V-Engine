@@ -8,9 +8,18 @@ namespace Material {
         m_shaderProgram = shaderProgram;
     }
 
-    void Material::use() const {
+    Shader::ShaderProgram* Material::getShader() {
+        return m_shaderProgram;
+    }
+
+    void Material::bind() const {
         if (m_shaderProgram) {
-            m_shaderProgram->use();
+            m_shaderProgram->bind();
+        }
+    }
+    void Material::unbind() const {
+        if (m_shaderProgram) {
+            m_shaderProgram->unbind();
         }
     }
 }
