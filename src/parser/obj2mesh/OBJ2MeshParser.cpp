@@ -82,48 +82,28 @@ namespace Parser {
                 std::string v;
                 std::string vt;
                 std::string vn; // Optional
+                std::vector<Index> indexes;
 
                 // Token parsing
-                if (tokens.size() == 4) {
-                    for (int i = 1; i < tokens.size(); i++) {
-                        std::istringstream fs(tokens[i]);
-                        std::getline(fs, v, '/');
-                        std::getline(fs, vt, '/');
-                        std::getline(fs, vn, '/');
+                for (int i = 1; i < tokens.size(); i++) {
+                    std::istringstream fs(tokens[i]);
+                    std::getline(fs, v, '/');
+                    std::getline(fs, vt, '/');
+                    std::getline(fs, vn, '/');
 
-                        // Indexes
-                        int iv = std::stoi(v) - 1;
-                        int ivt = vt.empty() ? -1 : std::stoi(vt) -1;
-                        int ivn = vn.empty() ? -1 : std::stoi(vn) -1;
+                    // Indexes
+                    int iv = std::stoi(v) - 1;
+                    int ivt = vt.empty() ? -1 : std::stoi(vt) -1;
+                    int ivn = vn.empty() ? -1 : std::stoi(vn) -1;
 
-                        Index index;
-                        index.vertex = m_vertices[iv];
-                        index.texture = m_vertexTextures[ivt];
-                        Normal normal;
-                        index.normal = normal;
-                        m_indexes.push_back(index);
-                    }
-                } else if (tokens.size() > 4) {
-                    std::vector<Index> indexes;
-                    for (int i = 1; i < tokens.size(); i++) {
-                        std::istringstream fs(tokens[i]);
-                        std::getline(fs, v, '/');
-                        std::getline(fs, vt, '/');
-                        std::getline(fs, vn, '/');
-
-                        // Indexes
-                        int iv = std::stoi(v) - 1;
-                        int ivt = vt.empty() ? -1 : std::stoi(vt) -1;
-                        int ivn = vn.empty() ? -1 : std::stoi(vn) -1;
-
-                        Index index;
-                        index.vertex = m_vertices[iv];
-                        index.texture = m_vertexTextures[ivt];
-                        Normal normal;
-                        index.normal = normal;
-                        indexes.push_back(index);
-                    }
-
+                    Index index;
+                    index.vertex = m_vertices[iv];
+                    index.texture = m_vertexTextures[ivt];
+                    Normal normal;
+                    index.normal = normal;
+                    indexes.push_back(index);
+                }
+                if (tokens.size() > 4) {
                     m_indexes.push_back(indexes[0]);
                     m_indexes.push_back(indexes[1]);
                     m_indexes.push_back(indexes[2]);
@@ -131,7 +111,12 @@ namespace Parser {
                     m_indexes.push_back(indexes[0]);
                     m_indexes.push_back(indexes[3]);
                     m_indexes.push_back(indexes[2]);
+                    continue;
                 }
+
+                m_indexes.push_back(indexes[0]);
+                m_indexes.push_back(indexes[1]);
+                m_indexes.push_back(indexes[2<]);
 
             }
         }

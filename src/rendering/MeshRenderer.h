@@ -8,8 +8,13 @@ namespace Rendering {
       MeshRenderer();
       ~MeshRenderer();
 
+      Material::Material getMaterial();
+      Mesh::Mesh getMesh();
+
+      void setMaterial(Material::Material material);
+      void setMesh(Mesh::Mesh mesh);
       private:
       Material::Material m_material;
       Mesh::Mesh m_mesh;
-   }
+   };
 }
