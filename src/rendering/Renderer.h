@@ -4,11 +4,11 @@
 namespace Rendering {
     class Renderer {
     public:
-        Renderer(Scene::Scene scene);
+        Renderer(Scene::Scene& scene);
         ~Renderer();
 
         void render();
     private:
-        Scene::Scene m_scene;
+        Scene::Scene& m_scene;
     };
 }

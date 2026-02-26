@@ -17,6 +17,10 @@ public:
     Mesh();
     ~Mesh();
 
+    // Copy only CPU data; GPU handles are not shared between copies
+    Mesh(const Mesh& other);
+    Mesh& operator=(const Mesh& other);
+
     void setVertices(const std::vector<Vertex>& vertices);
     void setIndices(const std::vector<unsigned int>& indices);
 
@@ -25,7 +29,9 @@ public:
     void build();
     void bind() const;
     void unbind() const;
-    
+
+    bool isBuilt() const { return m_built; }
+
     void cleanup();
 
 private:

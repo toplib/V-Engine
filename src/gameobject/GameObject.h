@@ -8,11 +8,14 @@ namespace GameObject {
         GameObject();
         ~GameObject();
 
-        Rendering::MeshRenderer getMeshRenderer();
-        Transform::Transform getTransform();
+        Rendering::MeshRenderer& getMeshRenderer();
+        Transform::Transform& getTransform();
 
         void setMeshRenderer(Rendering::MeshRenderer renderer);
-        void setTransform(Transform::Transform transform);
+        void setTransform(Transform::Transform transform); 
+
+        void start();
+        void update();
 
         bool m_rendererEnabled = true;
     private:

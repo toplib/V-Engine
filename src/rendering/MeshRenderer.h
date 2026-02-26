@@ -8,8 +8,8 @@ namespace Rendering {
       MeshRenderer();
       ~MeshRenderer();
 
-      Material::Material getMaterial();
-      Mesh::Mesh getMesh();
+      Material::Material& getMaterial();
+      Mesh::Mesh& getMesh();
 
       void setMaterial(Material::Material material);
       void setMesh(Mesh::Mesh mesh);

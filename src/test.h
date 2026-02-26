@@ -18,6 +18,7 @@ char* loadShaderFromPath(const char* path){
         return nullptr;
     }
 
+
     buffer[size] = '\0';   // to C str
     return buffer;
 }

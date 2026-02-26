@@ -8,11 +8,10 @@ namespace Scene {
         m_gameObjects = gameObjects;
     }
 
-    std::vector<GameObject::GameObject> Scene::getGameObjects() {
+    std::vector<GameObject::GameObject>& Scene::getGameObjects() {
         return m_gameObjects;
     }
-
-    void Scene::getGameObjects(std::vector<GameObject::GameObject>& gameObjects) {
-        gameObjects = m_gameObjects;
+    void Scene::addGameObject(GameObject::GameObject& gameObject) {
+        m_gameObjects.push_back(gameObject);
     }
 }

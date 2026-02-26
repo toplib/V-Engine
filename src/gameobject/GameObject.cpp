@@ -12,10 +12,18 @@ namespace GameObject {
         m_renderer = renderer;
     }
 
-    Rendering::MeshRenderer GameObject::getMeshRenderer() {
+    Rendering::MeshRenderer& GameObject::getMeshRenderer() {
         return m_renderer;
     }
-    Transform::Transform GameObject::getTransform() {
+    Transform::Transform& GameObject::getTransform() {
         return m_transform;
+    }
+
+    void GameObject::start() {
+        // do nothing at future we will execute this method's in the components
+    }
+
+    void GameObject::update() {
+        // do nothing
     }
 }

@@ -92,4 +92,8 @@ void Window::framebufferSizeCallback(GLFWwindow* glfwWindow, int width, int heig
         glViewport(0, 0, width, height);
     }
 }
+
+void Window::setInputMode(int mode, int value) {
+    glfwSetInputMode(m_window, mode, value);
+}
 }

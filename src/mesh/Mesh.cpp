@@ -8,6 +8,20 @@ Mesh::~Mesh() {
     cleanup();
 }
 
+Mesh::Mesh(const Mesh& other)
+    : m_vertices(other.m_vertices), m_indices(other.m_indices) {
+    // GPU handles are not copied; the new instance starts unbuilt
+}
+
+Mesh& Mesh::operator=(const Mesh& other) {
+    if (this == &other) return *this;
+    cleanup();
+    m_vertices = other.m_vertices;
+    m_indices  = other.m_indices;
+    // GPU handles reset to defaults by cleanup(); new instance starts unbuilt
+    return *this;
+}
+
 void Mesh::setVertices(const std::vector<Vertex>& vertices) {
     m_vertices = vertices;
 }
@@ -49,7 +63,7 @@ void Mesh::build() {
     glEnableVertexAttribArray(1);
 
     // Texture coord attribute (location 2)
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
     glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);

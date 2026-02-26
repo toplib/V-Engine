@@ -32,6 +32,9 @@ public:
     Input::InputType getMouseButton(int button) const;
     void getCursorPos(double& x, double& y) const;
 
+
+    void setInputMode(int mode, int value);
+
 private:
     int m_width;
     int m_height;

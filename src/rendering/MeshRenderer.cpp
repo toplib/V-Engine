@@ -11,11 +11,11 @@ namespace Rendering {
         m_mesh = mesh;
     }
 
-    Material::Material MeshRenderer::getMaterial() {
+    Material::Material& MeshRenderer::getMaterial() {
         return m_material;
     }
 
-    Mesh::Mesh MeshRenderer::getMesh() {
+    Mesh::Mesh& MeshRenderer::getMesh() {
         return m_mesh;
     }
 }
