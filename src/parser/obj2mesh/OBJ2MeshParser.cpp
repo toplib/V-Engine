@@ -109,8 +109,8 @@ namespace Parser {
                     m_indexes.push_back(indexes[2]);
 
                     m_indexes.push_back(indexes[0]);
-                    m_indexes.push_back(indexes[3]);
                     m_indexes.push_back(indexes[2]);
+                    m_indexes.push_back(indexes[3]);
                     continue;
                 }
 

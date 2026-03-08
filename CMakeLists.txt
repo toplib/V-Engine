@@ -67,6 +67,10 @@ set(VALID_SOURCES ${SOURCES}
         src/scene/Scene.cpp
         src/rendering/Renderer.h
         src/rendering/Renderer.cpp
+        src/lightning/Light.h
+        src/lightning/LightType.h
+        src/lightning/PointLight.h
+        src/core/Engine.h
 )
 
 # Create executable

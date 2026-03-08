@@ -71,6 +71,10 @@ int main()
     if (!texture.load("/home/toplib/V-Engine/res/hazmat.jpg")) {
         std::cerr << "Failed to load texture" << std::endl;
     }
+    Texture::Texture texture1;
+    if (!texture1.load("/home/toplib/V-Engine/res/texture.jpg")) {
+        std::cerr << "Failed to load texture" << std::endl;
+    }
 
     // Parse mesh and upload to GPU
     Parser::OBJ2MeshParser parser;
@@ -78,13 +82,26 @@ int main()
     parser.source(&source);
     Mesh::Mesh mesh = parser.parse();
     mesh.build();
+    source = loadShaderFromPath("/home/toplib/V-Engine/res/cube.obj");
+    parser.source(&source);
+    Mesh::Mesh mesh1 = parser.parse();
+    mesh1.build();
 
+    // Material
     Material::Material material;
     material.setShader(&shaderProgram);
+    material.setTexture(&texture);
+    Material::Material material1;
+    material1.setShader(&shaderProgram);
+    material1.setColor(glm::vec4(245.0f / 255.0f, 141.0f / 255.0f, 66.0f / 255.0f, 1.0f));
+    material1.setTexture(&texture1);
 
     Rendering::MeshRenderer meshRenderer;
     meshRenderer.setMesh(mesh);
     meshRenderer.setMaterial(material);
+    Rendering::MeshRenderer meshRenderer1;
+    meshRenderer1.setMesh(mesh1);
+    meshRenderer1.setMaterial(material1);
 
     GameObject::GameObject gameObject;
     gameObject.setMeshRenderer(meshRenderer);
@@ -93,20 +110,19 @@ int main()
         glm::quat(glm::vec3(0.0f, glm::radians(180.0f), 0.0f)),
         glm::vec3(1.0f)
     ));
+    GameObject::GameObject gameObject1;
+    gameObject1.setMeshRenderer(meshRenderer1);
+    gameObject1.setTransform(Transform::Transform(
+        glm::vec3(0.0f, -1.0f, -1.0f),
+        glm::quat(glm::vec3(0.0f, glm::radians(180.0f), 0.0f)),
+        glm::vec3(0.4f)
+    ));
 
     Scene::Scene scene;
     scene.addGameObject(gameObject);
+    scene.addGameObject(gameObject1);
 
     Debug::Logger logger("main");
-
-    const int viewLoc = shaderProgram.getUniformLocation("view");
-    const int projectionLoc = shaderProgram.getUniformLocation("projection");
-    const int textureLoc = shaderProgram.getUniformLocation("ourTexture");
-
-    shaderProgram.bind();
-    if (textureLoc != -1) {
-        shaderProgram.setUniform1i(textureLoc, 0);
-    }
 
     Rendering::Renderer renderer(scene);
 
@@ -117,9 +133,11 @@ int main()
             {1.0, 1.0f, 1.0f}
         });
 
+    scene.setActiveCamera(&camera);
     // Render loop
     glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     while (!window.shouldClose()) {
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
@@ -174,11 +192,6 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shaderProgram.bind();
-
-        if (viewLoc != -1) shaderProgram.setUniformMatrix4(viewLoc, camera.getViewMatrix());
-        if (projectionLoc != -1) shaderProgram.setUniformMatrix4(projectionLoc, camera.getProjectionMatrix());
-        texture.bind();
         renderer.render();
 
         window.swapBuffers();
@@ -186,7 +199,6 @@ int main()
     }
 
     // Cleanup
-    texture.cleanup();
 
     window.shutdown();
     return 0;

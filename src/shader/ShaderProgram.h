@@ -34,6 +34,12 @@ namespace Shader {
         void setUniform1i(int location, int value);
         void setUniform1i(const std::string& name, int value);
 
+        void setUniform3f(int location, glm::vec3 value);
+        void setUniform3f(const std::string& name, glm::vec3 value);
+
+        void setUniform4f(int location, glm::vec4 value);
+        void setUniform4f(const std::string& name, glm::vec4 value);
+
         unsigned int id() const { return m_id; }
 
     private:

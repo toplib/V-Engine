@@ -99,4 +99,27 @@ namespace Shader {
             setUniform1i(location, value);
         }
     }
+
+    void ShaderProgram::setUniform3f(int location, glm::vec3 value) {
+        glUniform3f(location, value.x, value.y, value.z);
+    }
+
+    void ShaderProgram::setUniform3f(const std::string& name, glm::vec3 value) {
+        const int location = getUniformLocation(name);
+        if (location != -1) {
+            glUniform3f(location, value.x, value.y, value.z);
+        }
+    }
+
+    void ShaderProgram::setUniform4f(int location, glm::vec4 value) {
+        glUniform4f(location, value.x, value.y, value.z, value.w);
+    }
+
+    void ShaderProgram::setUniform4f(const std::string& name, glm::vec4 value) {
+        const int location = getUniformLocation(name);
+        if (location != -1) {
+            glUniform4f(location, value.x, value.y, value.z, value.w);
+        }
+
+    }
 }

@@ -8,6 +8,8 @@ namespace Rendering {
 
     void Renderer::render() {
         std::vector<GameObject::GameObject>& objects = m_scene.getGameObjects();
+        Camera::Camera* activeCamera = m_scene.getActiveCamera();
+
         for (int i = 0; i < objects.size(); i++) {
             if (objects[i].m_rendererEnabled) {
                 MeshRenderer& mr = objects[i].getMeshRenderer();
@@ -26,6 +28,14 @@ namespace Rendering {
                         "model",
                         objects[i].getTransform().getModelMatrix()
                     );
+                    material.getShader()->setUniformMatrix4(
+                        "projection",
+                        activeCamera->getProjectionMatrix()
+                        );
+                    material.getShader()->setUniformMatrix4(
+                        "view",
+                        activeCamera->getViewMatrix()
+                        );
                 }
 
                 mesh.bind();
