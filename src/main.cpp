@@ -93,7 +93,7 @@ int main()
     material.setTexture(&texture);
     Material::Material material1;
     material1.setShader(&shaderProgram);
-    material1.setColor(glm::vec4(245.0f / 255.0f, 141.0f / 255.0f, 66.0f / 255.0f, 1.0f));
+    //material1.setColor(glm::vec4(245.0f / 255.0f, 141.0f / 255.0f, 66.0f / 255.0f, 1.0f));
     material1.setTexture(&texture1);
 
     Rendering::MeshRenderer meshRenderer;
@@ -132,6 +132,12 @@ int main()
             glm::quat(glm::vec3(0.0f)),
             {1.0, 1.0f, 1.0f}
         });
+    Camera::Camera camera1(SCR_WIDTH, SCR_HEIGHT, 40.0f, 100.0f, 0.01f,
+        {
+            {0.0f, 0.0f, -5.0f},
+            glm::quat(glm::vec3(0.0f)),
+            {1.0, 1.0f, 1.0f}
+        });
 
     scene.setActiveCamera(&camera);
     // Render loop
@@ -155,6 +161,12 @@ int main()
         }
         if (window.getKey(GLFW_KEY_D) == Input::InputType::PRESS) {
             camera.moveRight(0.04f);
+        }
+        if (window.getKey(GLFW_KEY_J) == Input::InputType::PRESS) {
+            scene.setActiveCamera(&camera1);
+        }
+        if (window.getKey(GLFW_KEY_K) == Input::InputType::PRESS) {
+            scene.setActiveCamera(&camera);
         }
 
         if (window.getMouseButton(GLFW_MOUSE_BUTTON_RIGHT) == Input::InputType::PRESS) {
@@ -189,7 +201,7 @@ int main()
             }
         }
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         renderer.render();

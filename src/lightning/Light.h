@@ -5,11 +5,13 @@
 namespace Lightning {
     class Light {
         public:
-        virtual ~Light();
+        Light(LightType type, Transform::Transform transform);
+        ~Light();
 
-        virtual LightType getLightType();
-        virtual Transform::Transform getTransform();
-        virtual glm::vec3 getColor();
-        virtual float getIntensity();
+        private:
+        LightType m_type;
+        Transform::Transform m_transform;
+        glm::vec3 m_color;
+
     };
 }

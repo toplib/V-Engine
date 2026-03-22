@@ -100,7 +100,13 @@ namespace Parser {
                     index.vertex = m_vertices[iv];
                     index.texture = m_vertexTextures[ivt];
                     Normal normal;
+
                     index.normal = normal;
+                    if (ivn != -1) {
+                        index.normal = m_normals[ivn];
+                    } else {
+                        index.normal = Normal{0.0f, 0.0f, 1.0f};
+                    }
                     indexes.push_back(index);
                 }
                 if (tokens.size() > 4) {

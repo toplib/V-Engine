@@ -19,6 +19,7 @@ namespace Camera {
         glm::mat4 getProjectionMatrix();
         glm::mat4 getViewMatrix();
 
+
         private:
         int m_width;
         int m_height;

@@ -36,6 +36,10 @@ namespace Rendering {
                         "view",
                         activeCamera->getViewMatrix()
                         );
+                    material.getShader()->setUniform3f(
+                        "viewPos",
+                        activeCamera->getTransform().getPosition()
+                        );
                 }
 
                 mesh.bind();
