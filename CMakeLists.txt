@@ -71,6 +71,8 @@ set(VALID_SOURCES ${SOURCES}
         src/lighting/LightType.h
         src/core/Engine.h
         src/lighting/Light.cpp
+        src/SimpleSceneFactory.h
+        src/vpf/VPFHeader.h
 )
 
 # Create executable

@@ -1,1 +1,2 @@
-- [ ] Make simple lightning
+- [ ] Implement PBR render
+- [ ] Create simple demo scene
