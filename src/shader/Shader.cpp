@@ -13,7 +13,6 @@ namespace Shader {
             type == ShaderType::VERTEX ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER
         );
         if (!m_id) {
-            std::cerr << "Failed to create shader object" << std::endl;
             throw std::runtime_error("Failed to create shader object");
         }
     }
@@ -72,10 +71,8 @@ namespace Shader {
         if (!success) {
             std::vector<char> infoLog(512);
             glGetShaderInfoLog(m_id, infoLog.size(), nullptr, infoLog.data());
-            std::cerr << "Shader compilation failed:" << std::endl;
-            std::cerr << infoLog.data() << std::endl;
             throw std::runtime_error(
-                std::string("Shader compilation failed: ") + infoLog.data()
+                std::string("Shader compilation failed: \n") + infoLog.data()
             );
         }
         return true;

@@ -6,10 +6,9 @@
 
 namespace Shader {
 
-    ShaderProgram::ShaderProgram() {
+    ShaderProgram::ShaderProgram() : m_logger(Debug::Logger("ShaderProgram")) {
         m_id = glCreateProgram();
         if (!m_id) {
-            std::cerr << "Failed to create program object" << std::endl;
             throw std::runtime_error("Failed to create program object");
         }
     }
@@ -20,10 +19,11 @@ namespace Shader {
         }
     }
 
-    ShaderProgram::ShaderProgram(ShaderProgram&& other) noexcept
-        : m_id(other.m_id) {
+    ShaderProgram::ShaderProgram(ShaderProgram&& other)  noexcept
+        : m_logger(Debug::Logger("ShaderProgram")), m_id(other.m_id) {
         other.m_id = 0;
     }
+
 
     ShaderProgram& ShaderProgram::operator=(ShaderProgram&& other) noexcept {
         if (this != &other) {
@@ -48,10 +48,8 @@ namespace Shader {
         if (!success) {
             std::vector<char> infoLog(512);
             glGetProgramInfoLog(m_id, infoLog.size(), nullptr, infoLog.data());
-            std::cerr << "Program linking failed:" << std::endl;
-            std::cerr << infoLog.data() << std::endl;
             throw std::runtime_error(
-                std::string("Program linking failed: ") + infoLog.data()
+                std::string("Program linking failed: \n") + infoLog.data()
             );
         }
         return true;
@@ -71,7 +69,8 @@ namespace Shader {
 
         const int location = glGetUniformLocation(m_id, name.c_str());
         if (location == -1) {
-            std::cerr << "Uniform '" << name << "' not found" << std::endl;
+            std::string warningText = "Uniform '" + name + "' not found";
+            m_logger.printWarning(warningText);
         }
 
         m_uniformLocationCache.emplace(name, location);

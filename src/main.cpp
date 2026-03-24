@@ -18,7 +18,7 @@
 #include "rendering/MeshRenderer.h"
 #include "gameobject/GameObject.h"
 #include "core/Transform.h"
-
+#include "debug/Logger.h"
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
@@ -31,13 +31,13 @@ double lastMouseY = 0.0;
 bool isRMBPressed = false;
 float currentPitch = 0.0f;
 float currentYaw = 0.0f;
-
+Debug::Logger logger("main");
 int main()
 {
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
     if (!window.isInitialized()) {
-        std::cerr << "Failed to initialize window" << std::endl;
+        logger.printError("Failed to initialize window");
         return -1;
     }
 
@@ -119,8 +119,8 @@ int main()
     ));
 
     Scene::Scene scene;
-    scene.addGameObject(gameObject);
-    scene.addGameObject(gameObject1);
+    scene.addGameObject(&gameObject);
+    scene.addGameObject(&gameObject1);
 
     Debug::Logger logger("main");
 
@@ -138,6 +138,22 @@ int main()
             glm::quat(glm::vec3(0.0f)),
             {1.0, 1.0f, 1.0f}
         });
+
+    Lighting::Light light = Lighting::Light();
+    light.setLightType(Lighting::LightType::POINT);
+    light.setTransform(Transform::Transform());
+    light.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+    Lighting::Light light1 = Lighting::Light();
+    light1.setLightType(Lighting::LightType::POINT);
+    light1.setTransform(Transform::Transform(
+        glm::vec3(0.0f, -5.0f, -1.0f),
+        glm::quat(glm::vec3(1.0f)),
+        glm::vec3(1.0f)
+    ));
+    light1.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+    scene.addLight(light);
+    scene.addLight(light1);
 
     scene.setActiveCamera(&camera);
     // Render loop

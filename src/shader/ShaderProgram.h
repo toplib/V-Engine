@@ -7,6 +7,8 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/type_ptr.hpp>
 
+#include "debug/Logger.h"
+
 namespace Shader {
 
     class ShaderProgram {
@@ -43,6 +45,7 @@ namespace Shader {
         unsigned int id() const { return m_id; }
 
     private:
+        Debug::Logger m_logger;
         unsigned int m_id{};
         std::unordered_map<std::string, int> m_uniformLocationCache{};
     };

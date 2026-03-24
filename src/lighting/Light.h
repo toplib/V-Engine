@@ -2,7 +2,7 @@
 #include "core/Transform.h"
 #include "LightType.h"
 
-namespace Lightning {
+namespace Lighting {
     class Light {
         public:
         Light();

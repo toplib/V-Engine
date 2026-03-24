@@ -72,7 +72,7 @@ void main()
 
     vec3 lightCalculation = vec3(0.0f);
     for(int i = 0; i < MAX_LIGHTS; i++){
-        lightCalculation = calculateLight(lights[i]);
+        lightCalculation = lightCalculation + (calculateLight(lights[i]));
     }
     vec4 result = baseColor * vec4(ambient + lightCalculation, 1.0f);
     FragColor = result;

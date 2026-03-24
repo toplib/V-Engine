@@ -3,8 +3,8 @@
 
 #include "gameobject/GameObject.h"
 #include "camera/Camera.h"
-#include "lightning/Light.h"
-
+#include "lighting/Light.h"
+#include "debug/Logger.h"
 #define MAX_LIGHTS 10
 namespace Scene {
     class Scene {
@@ -15,20 +15,23 @@ namespace Scene {
         void setGameObjects(const std::vector<GameObject::GameObject>* gameObjects);
 
         std::vector<GameObject::GameObject>& getGameObjects();
-        void addGameObject(GameObject::GameObject& gameObject);
+        void addGameObject(GameObject::GameObject* gameObject);
 
-        Lightning::Light* getLights();
-        void setLights(Lightning::Light* lights, int nLights);
-        void addLight(Lightning::Light& light);
+        Lighting::Light* getLights();
+        void setLights(Lighting::Light* lights, int nLights);
+        void addLight(Lighting::Light& light);
+        Lighting::Light *getLight(unsigned int index);
 
         Camera::Camera* getActiveCamera();
         void setActiveCamera(Camera::Camera* camera);
+        int m_lightsCount = 0;
     private:
-        Camera::Camera* m_activeCamera;
+        Debug::Logger m_logger;
+        Camera::Camera* m_activeCamera = nullptr;
         std::vector<GameObject::GameObject> m_gameObjects;
 
-        Lightning::Light m_lights[MAX_LIGHTS];
-        int m_lightsCount;
+        Lighting::Light m_lights[MAX_LIGHTS];
+        int m_startChangeLights = 0;
         int m_maxLights = MAX_LIGHTS;
     };
 }

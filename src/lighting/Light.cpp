@@ -1,6 +1,6 @@
 #include "Light.h"
 
-namespace Lightning {
+namespace Lighting {
     Light::Light() {
         m_type = LightType::POINT;
         m_transform = Transform::Transform(

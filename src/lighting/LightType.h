@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Lightning {
+namespace Lighting {
     enum class LightType : unsigned int {
         POINT = 0,
         DIRECTIONAL = 1,

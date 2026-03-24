@@ -4,37 +4,58 @@
 #include "debug/Logger.h"
 
 namespace Scene {
-    Scene::Scene() = default;
+    Scene::Scene() : m_logger(Debug::Logger("Scene")) {
+
+    }
+
     Scene::~Scene() = default;
 
 
     void Scene::setGameObjects(const std::vector<GameObject::GameObject>* gameObjects) {
-        if (gameObjects == nullptr) ;
+        if (gameObjects == nullptr) {
+            m_logger.printWarning("Scene::setGameObjects: gameObjects is nullptr skipping function call");
+            return;
+        }
         m_gameObjects = *gameObjects;
     }
 
     std::vector<GameObject::GameObject>& Scene::getGameObjects() {
         return m_gameObjects;
     }
-    void Scene::addGameObject(GameObject::GameObject& gameObject) {
-        m_gameObjects.push_back(gameObject);
+    void Scene::addGameObject(GameObject::GameObject* gameObject) {
+        if (gameObject == nullptr) {
+            m_logger.printWarning("Scene::addGameObject: gameObject is nullptr skipping function call");
+            return;
+        }
+        m_gameObjects.push_back(*gameObject);
     }
 
-    Lightning::Light* Scene::getLights() {
+    Lighting::Light* Scene::getLights() {
         return m_lights;
     }
-    void Scene::addLight(Lightning::Light& light) {
+    void Scene::addLight(Lighting::Light& light) {
         if (m_lightsCount < m_maxLights) {
-            m_lightsCount = 1;
+            int index = (m_startChangeLights + m_lightsCount) % m_maxLights;
+            m_lights[index] = light;
+            ++m_lightsCount;
+        } else {
+            m_lights[m_startChangeLights] = light;
+            m_startChangeLights = (m_startChangeLights + 1) % m_maxLights;
         }
-        m_lights[m_lightsCount] = light;
     }
-    void Scene::setLights(Lightning::Light* lights, int nLights) {
+    void Scene::setLights(Lighting::Light* lights, int nLights) {
         if (lights == nullptr) return;
 
         for(int i = 0; i < m_maxLights && i <= nLights; i++) {
             m_lights[i] = lights[i];
         }
+    }
+
+    Lighting::Light *Scene::getLight(unsigned int index) {
+        if (index >= m_maxLights || index >= m_lightsCount) {
+            return nullptr;
+        }
+        return &m_lights[index];
     }
 
     Camera::Camera* Scene::getActiveCamera() {
