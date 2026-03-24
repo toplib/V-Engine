@@ -1,13 +1,16 @@
 #include "Scene.h"
 
 #include "camera/Camera.h"
+#include "debug/Logger.h"
 
 namespace Scene {
     Scene::Scene() = default;
     Scene::~Scene() = default;
 
-    void Scene::setGameObjects(std::vector<GameObject::GameObject>& gameObjects) {
-        m_gameObjects = gameObjects;
+
+    void Scene::setGameObjects(const std::vector<GameObject::GameObject>* gameObjects) {
+        if (gameObjects == nullptr) ;
+        m_gameObjects = *gameObjects;
     }
 
     std::vector<GameObject::GameObject>& Scene::getGameObjects() {

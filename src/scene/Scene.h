@@ -12,7 +12,7 @@ namespace Scene {
         Scene();
         ~Scene();
 
-        void setGameObjects(std::vector<GameObject::GameObject>& gameObjects);
+        void setGameObjects(const std::vector<GameObject::GameObject>* gameObjects);
 
         std::vector<GameObject::GameObject>& getGameObjects();
         void addGameObject(GameObject::GameObject& gameObject);

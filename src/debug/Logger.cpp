@@ -10,8 +10,8 @@
 namespace Debug {
 
     static std::mutex g_mutex;
-    static constexpr int moduleLen = 10;   // ширина имени модуля
-    static constexpr const char* utcOffset = ""; // при желании: "+03:00"
+    static constexpr int moduleLen = 10;
+    static constexpr const char* utcOffset = "";
 
     Logger::Logger(std::string loggerClass)
         : m_loggerClass(std::move(loggerClass)) {}
