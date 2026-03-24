@@ -12,6 +12,10 @@ struct Light {
 struct Material {
     sampler2D m_albedo;
     float m_specularStrength;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
 };
 
 uniform Light lights[MAX_LIGHTS];
@@ -27,33 +31,50 @@ uniform vec3 viewPos;
 uniform float ambientStrength = 0.1f;
 float specularStrength = 0.5;
 vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
+
+vec3 calculateLight(Light light){
+    vec3 result = vec3(0.0f);
+    if(light.m_type == 0) {
+        vec3 lightDir = normalize(light.m_position - FragPos);
+        vec3 norm = normalize(Normal);
+        float diff = max(dot(norm, lightDir), 0.0);
+        vec3 diffuse = diff * light.m_color;
+
+        vec3 reflectDir = reflect(-lightDir, norm);
+
+        vec3 viewDir = normalize(viewPos - FragPos);
+        vec3 specular = vec3(0.0f);
+
+        if(diff > 0.0f){
+            float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+            specular = specularStrength * spec * light.m_color;
+        }
+        result = diffuse + specular;
+    }
+    return result;
+}
+
 void main()
 {
+    // Base color calculation
+    vec4 baseColor = vec4(1.0f);
+    if (o_m_hasTexture == 1) {
+        baseColor = texture(m_texture, TexCoord);
+    } else {
+        baseColor = o_m_color;
+    }
 
-    vec3 norm = normalize(Normal);
+    // Applying color modifier to base color
+    baseColor = baseColor * o_m_color;
+
     vec3 lightPos = vec3(0.0f, 0.0f, 0.0f);
-    vec3 lightDir = normalize(lightPos - FragPos);
     vec3 ambient = ambientStrength * lightColor;
 
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
-
-    vec4 result = vec4(1.0f);
-    if (o_m_hasTexture == 1) {
-        result = texture(m_texture, TexCoord);
-    } else {
-        result = o_m_color;
+    vec3 lightCalculation = vec3(0.0f);
+    for(int i = 0; i < MAX_LIGHTS; i++){
+        lightCalculation = calculateLight(lights[i]);
     }
-    vec3 reflectDir = reflect(-lightDir, norm);
-
-    vec3 viewDir = normalize(viewPos - FragPos);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specularStrength * spec * lightColor;
-    result = result * o_m_color;
-    vec4 ambdiff = vec4(ambient + diffuse + specular, 1.0f);
-
-
-    result = result * ambdiff;
+    vec4 result = baseColor * vec4(ambient + lightCalculation, 1.0f);
     FragColor = result;
-
 }
+
