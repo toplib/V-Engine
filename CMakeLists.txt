@@ -72,7 +72,11 @@ set(VALID_SOURCES ${SOURCES}
         src/core/Engine.h
         src/lighting/Light.cpp
         src/SimpleSceneFactory.h
-        src/vpf/VPFHeader.h
+        src/vpf/Header.h
+        src/vpf/PathTableEntry.h
+        src/vpf/FileEntryHeader.h
+        src/vpf/Package.h
+        src/vpf/Package.cpp
 )
 
 # Create executable
