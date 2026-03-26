@@ -75,6 +75,10 @@ int main()
     if (!texture1.load("/home/toplib/V-Engine/res/texture.jpg")) { // "/home/toplib/V-Engine/res/SampleScene/hltex/C1A1_LINO.png"
         std::cerr << "Failed to load texture" << std::endl;
     }
+    Texture::Texture texture2;
+    if (!texture2.load("/home/toplib/V-Engine/res/SampleScene/pc.png")) { // "/home/toplib/V-Engine/res/SampleScene/hltex/C1A1_LINO.png"
+        std::cerr << "Failed to load texture" << std::endl;
+    }
 
     // Parse mesh and upload to GPU
     Parser::OBJ2MeshParser parser;
@@ -86,6 +90,10 @@ int main()
     parser.source(&source);
     Mesh::Mesh mesh1 = parser.parse();
     mesh1.build();
+    source = loadShaderFromPath("/home/toplib/V-Engine/res/SampleScene/pc.obj");
+    parser.source(&source);
+    Mesh::Mesh mesh2 = parser.parse();
+    mesh2.build();
 
     // Material
     Material::Material material;
@@ -96,6 +104,9 @@ int main()
     //material1.setColor(glm::vec4(245.0f / 255.0f, 141.0f / 255.0f, 66.0f / 255.0f, 1.0f));
     //material1.setColor(glm::vec4(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f, 1.0f));
     material1.setTexture(&texture1);
+    Material::Material material2;
+    material2.setShader(&shaderProgram);
+    material2.setTexture(&texture2);
 
     Rendering::MeshRenderer meshRenderer;
     meshRenderer.setMesh(mesh);
@@ -103,6 +114,9 @@ int main()
     Rendering::MeshRenderer meshRenderer1;
     meshRenderer1.setMesh(mesh1);
     meshRenderer1.setMaterial(material1);
+    Rendering::MeshRenderer meshRenderer2;
+    meshRenderer2.setMesh(mesh2);
+    meshRenderer2.setMaterial(material2);
 
     GameObject::GameObject gameObject;
     gameObject.setMeshRenderer(meshRenderer);
@@ -118,10 +132,18 @@ int main()
         glm::quat(glm::vec3(0.0f, glm::radians(180.0f), 0.0f)),
         glm::vec3(1.0f)
     ));
+    GameObject::GameObject gameObject2;
+    gameObject2.setMeshRenderer(meshRenderer2);
+    gameObject2.setTransform(Transform::Transform(
+        glm::vec3(0.0f,  1.0f, -2.0f),
+        glm::quat(glm::vec3(0.0f, glm::radians(90.0f), 0.0f)),
+        glm::vec3(0.2f)
+    ));
 
     Scene::Scene scene;
     scene.addGameObject(&gameObject);
     scene.addGameObject(&gameObject1);
+    scene.addGameObject(&gameObject2);
 
     Debug::Logger logger("main");
 
@@ -144,17 +166,29 @@ int main()
     light.setLightType(Lighting::LightType::POINT);
     light.setTransform(Transform::Transform());
     light.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    Lighting::Light light2 = Lighting::Light();
+    light2.setLightType(Lighting::LightType::POINT);
+    light2.setTransform(
+        Transform::Transform(
+        glm::vec3(-2.0f,  2.0f, -2.0f),
+        glm::quat(glm::vec3(0.0f, glm::radians(90.0f), 0.0f)),
+          glm::vec3(0.2f)
+            )
 
-    // Lighting::Light light1 = Lighting::Light();
-    // light1.setLightType(Lighting::LightType::POINT);
-    // light1.setTransform(Transform::Transform(
-    //     glm::vec3(0.0f, -5.0f, -1.0f),
-    //     glm::quat(glm::vec3(1.0f)),
-    //     glm::vec3(1.0f)
-    // ));
-    //light1.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+    );
+    light2.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+    Lighting::Light light1 = Lighting::Light();
+    light1.setLightType(Lighting::LightType::POINT);
+    light1.setTransform(Transform::Transform(
+         glm::vec3(0.0f, -5.0f, -1.0f),
+         glm::quat(glm::vec3(1.0f)),
+         glm::vec3(1.0f)
+     ));
+    light1.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
     scene.addLight(light);
-    //scene.addLight(light1);
+    //scene.addLight(light2);
+    scene.addLight(light1);
 
     scene.setActiveCamera(&camera);
     // Render loop

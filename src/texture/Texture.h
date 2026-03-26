@@ -34,8 +34,8 @@ private:
     
     GLenum m_wrapS = GL_MIRRORED_REPEAT;
     GLenum m_wrapT = GL_MIRRORED_REPEAT;
-    GLenum m_minFilter = GL_LINEAR_MIPMAP_LINEAR;
-    GLenum m_magFilter = GL_LINEAR;
+    GLenum m_minFilter = GL_LINEAR_MIPMAP_LINEAR; // GL_NEAREST_MIPMAP_NEAREST;
+    GLenum m_magFilter = GL_LINEAR; // GL_NEAREST;
 };
 
 } // namespace Texture
