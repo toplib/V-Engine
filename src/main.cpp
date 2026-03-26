@@ -35,11 +35,10 @@ float currentYaw = 0.0f;
 Debug::Logger logger("main");
 int main()
 {
-    VPF::Package package;
-    package.open("/home/toplib/V-Engine/res/demo.vpf");
-    package.has("textures/hazmat.png");
-    package.close();
-    return 0;
+    // VPF::Package package;
+    // package.open("/home/toplib/V-Engine/res/demo.vpf");
+    // package.has("textures/hazmat.png");
+    // package.close();
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
     if (!window.isInitialized()) {
