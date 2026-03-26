@@ -77,6 +77,7 @@ set(VALID_SOURCES ${SOURCES}
         src/vpf/FileEntryHeader.h
         src/vpf/Package.h
         src/vpf/Package.cpp
+        src/vpf/CollisionEntry.h
 )
 
 # Create executable
@@ -92,6 +93,7 @@ target_include_directories(V-Engine PRIVATE
 target_link_libraries(V-Engine
         glad
         glfw
+        xxhash
         ${CMAKE_DL_LIBS}
 )
 
