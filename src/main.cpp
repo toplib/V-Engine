@@ -72,7 +72,7 @@ int main()
         std::cerr << "Failed to load texture" << std::endl;
     }
     Texture::Texture texture1;
-    if (!texture1.load("/home/toplib/V-Engine/res/texture.jpg")) {
+    if (!texture1.load("/home/toplib/V-Engine/res/texture.jpg")) { // "/home/toplib/V-Engine/res/SampleScene/hltex/C1A1_LINO.png"
         std::cerr << "Failed to load texture" << std::endl;
     }
 
@@ -82,7 +82,7 @@ int main()
     parser.source(&source);
     Mesh::Mesh mesh = parser.parse();
     mesh.build();
-    source = loadShaderFromPath("/home/toplib/V-Engine/res/cube.obj");
+    source = loadShaderFromPath("/home/toplib/V-Engine/res/SampleScene/plane.obj");
     parser.source(&source);
     Mesh::Mesh mesh1 = parser.parse();
     mesh1.build();
@@ -94,6 +94,7 @@ int main()
     Material::Material material1;
     material1.setShader(&shaderProgram);
     //material1.setColor(glm::vec4(245.0f / 255.0f, 141.0f / 255.0f, 66.0f / 255.0f, 1.0f));
+    //material1.setColor(glm::vec4(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f, 1.0f));
     material1.setTexture(&texture1);
 
     Rendering::MeshRenderer meshRenderer;
@@ -106,7 +107,7 @@ int main()
     GameObject::GameObject gameObject;
     gameObject.setMeshRenderer(meshRenderer);
     gameObject.setTransform(Transform::Transform(
-        glm::vec3(0.0f, 0.0f, -1.0f),
+        glm::vec3(0.0f, -1.0f, -1.0f),
         glm::quat(glm::vec3(0.0f, glm::radians(180.0f), 0.0f)),
         glm::vec3(1.0f)
     ));
@@ -115,7 +116,7 @@ int main()
     gameObject1.setTransform(Transform::Transform(
         glm::vec3(0.0f, -1.0f, -1.0f),
         glm::quat(glm::vec3(0.0f, glm::radians(180.0f), 0.0f)),
-        glm::vec3(0.4f)
+        glm::vec3(1.0f)
     ));
 
     Scene::Scene scene;
@@ -144,39 +145,45 @@ int main()
     light.setTransform(Transform::Transform());
     light.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
-    Lighting::Light light1 = Lighting::Light();
-    light1.setLightType(Lighting::LightType::POINT);
-    light1.setTransform(Transform::Transform(
-        glm::vec3(0.0f, -5.0f, -1.0f),
-        glm::quat(glm::vec3(1.0f)),
-        glm::vec3(1.0f)
-    ));
-    light1.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+    // Lighting::Light light1 = Lighting::Light();
+    // light1.setLightType(Lighting::LightType::POINT);
+    // light1.setTransform(Transform::Transform(
+    //     glm::vec3(0.0f, -5.0f, -1.0f),
+    //     glm::quat(glm::vec3(1.0f)),
+    //     glm::vec3(1.0f)
+    // ));
+    //light1.setColor(glm::vec3(1.0f, 0.0f, 0.0f));
     scene.addLight(light);
-    scene.addLight(light1);
+    //scene.addLight(light1);
 
     scene.setActiveCamera(&camera);
     // Render loop
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+    float moveSpeed = 0.04f;
     while (!window.shouldClose()) {
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
         }
 
         // TODO: Move to camera control class
+        if (window.getKey(GLFW_KEY_LEFT_SHIFT) == Input::InputType::PRESS) {
+            moveSpeed = 0.12f;
+        } else {
+            moveSpeed = 0.04f;
+        }
         if (window.getKey(GLFW_KEY_W) == Input::InputType::PRESS) {
-            camera.moveForward(0.04f);
+            camera.moveForward(moveSpeed);
         }
         if (window.getKey(GLFW_KEY_S) == Input::InputType::PRESS) {
-            camera.moveForward(-0.04f);
+            camera.moveForward(-moveSpeed);
         }
         if (window.getKey(GLFW_KEY_A) == Input::InputType::PRESS) {
-            camera.moveRight(-0.04f);
+            camera.moveRight(-moveSpeed);
         }
         if (window.getKey(GLFW_KEY_D) == Input::InputType::PRESS) {
-            camera.moveRight(0.04f);
+            camera.moveRight(moveSpeed);
         }
         if (window.getKey(GLFW_KEY_J) == Input::InputType::PRESS) {
             scene.setActiveCamera(&camera1);

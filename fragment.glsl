@@ -4,9 +4,9 @@ out vec4 FragColor;
 #define MAX_LIGHTS 10
 
 struct Light {
-    int m_type; // 0 - Point Light, 1 - Directional Light, 2 - Spot Light
-    vec3 m_position;
-    vec3 m_color;
+    int type; // 0 - Point Light, 1 - Directional Light, 2 - Spot Light
+    vec3 position;
+    vec3 color;
 };
 
 struct Material {
@@ -19,7 +19,6 @@ struct Material {
 };
 
 uniform Light lights[MAX_LIGHTS];
-
 in vec2 TexCoord;
 in vec4 o_m_color;
 flat in int o_m_hasTexture;
@@ -34,11 +33,13 @@ vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 
 vec3 calculateLight(Light light){
     vec3 result = vec3(0.0f);
-    if(light.m_type == 0) {
-        vec3 lightDir = normalize(light.m_position - FragPos);
+    if(light.type == 0) {
+        vec3 lightDir = normalize(light.position - FragPos);
         vec3 norm = normalize(Normal);
+        float modifier = 0.0f;
+        modifier = normalize(abs(-length(FragPos - light.position)));
         float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = diff * light.m_color;
+        vec3 diffuse = diff * light.color * vec3(modifier);
 
         vec3 reflectDir = reflect(-lightDir, norm);
 
@@ -47,7 +48,7 @@ vec3 calculateLight(Light light){
 
         if(diff > 0.0f){
             float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-            specular = specularStrength * spec * light.m_color;
+            specular = specularStrength * spec * light.color;
         }
         result = diffuse + specular;
     }

@@ -45,9 +45,9 @@ namespace Rendering {
                 mesh.bind();
 
                 for (int i = 0; i < m_scene.m_lightsCount; i++) {
-                    material.getShader()->setUniform1i("lights[" + std::to_string(i) + "].m_type", 0);
-                    material.getShader()->setUniform3f("lights[" + std::to_string(i) + "].m_position", m_scene.getLight(i)->getTransform().getPosition());
-                    material.getShader()->setUniform3f("lights[" + std::to_string(i) + "].m_color", m_scene.getLight(i)->getColor());
+                    material.getShader()->setUniform1i("lights[" + std::to_string(i) + "].type", 0);
+                    material.getShader()->setUniform3f("lights[" + std::to_string(i) + "].position", m_scene.getLight(i)->getTransform().getPosition());
+                    material.getShader()->setUniform3f("lights[" + std::to_string(i) + "].color", m_scene.getLight(i)->getColor());
                 }
 
                 glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(mesh.getVertices().size()));
