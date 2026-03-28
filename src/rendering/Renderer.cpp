@@ -46,8 +46,19 @@ namespace Rendering {
 
                 for (int i = 0; i < m_scene.m_lightsCount; i++) {
                     material.getShader()->setUniform1i("lights[" + std::to_string(i) + "].type", 0);
-                    material.getShader()->setUniform3f("lights[" + std::to_string(i) + "].position", m_scene.getLight(i)->getTransform().getPosition());
-                    material.getShader()->setUniform3f("lights[" + std::to_string(i) + "].color", m_scene.getLight(i)->getColor());
+                    glm::vec3 p = m_scene.getLight(i)->getTransform().getPosition();
+                    material.getShader()->setUniform4f(
+                        "lights[" + std::to_string(i) + "].position",
+                        glm::vec4(p.x, p.y, p.z, 1.0f)
+                    );
+                    glm::vec3 c = m_scene.getLight(i)->getColor();
+                    material.getShader()->setUniform4f(
+                        "lights[" + std::to_string(i) + "].color",
+                        glm::vec4(c.x, c.y, c.z, 1.0f)
+                    );
+                    material.getShader()->setUniform1f("lights[" + std::to_string(i) + "].constant", m_scene.getLight(i)->getConstant());
+                    material.getShader()->setUniform1f("lights[" + std::to_string(i) + "].linear", m_scene.getLight(i)->getLinear());
+                    material.getShader()->setUniform1f("lights[" + std::to_string(i) + "].quadratic", m_scene.getLight(i)->getQuadratic());
                 }
 
                 glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(mesh.getVertices().size()));

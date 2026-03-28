@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
 project(V-Engine VERSION 1.0.0 LANGUAGES C CXX)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
@@ -32,6 +31,26 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${PROJECT_SOURCE_DIR}/include/glfw)
+
+# ImGui
+set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/include/imgui)
+
+add_library(imgui STATIC
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        ${IMGUI_DIR}/imgui_demo.cpp
+        ${IMGUI_DIR}/backend/imgui_impl_glfw.cpp
+        ${IMGUI_DIR}/backend/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(imgui PUBLIC
+        ${IMGUI_DIR}
+        ${IMGUI_DIR}/backend
+)
+
+target_link_libraries(imgui PUBLIC glfw)
 
 # Gather all source files - CONFIGURE_DEPENDS auto-reloads CMake when files change
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
@@ -82,12 +101,15 @@ add_executable(V-Engine ${VALID_SOURCES})
 target_include_directories(V-Engine PRIVATE
         src
         ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/imgui
+        ${PROJECT_SOURCE_DIR}/include/imgui/backend
 )
 
 # Link libraries
 target_link_libraries(V-Engine
         glad
         glfw
+        imgui
         ${CMAKE_DL_LIBS}
 )
 

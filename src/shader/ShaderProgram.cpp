@@ -99,6 +99,17 @@ namespace Shader {
         }
     }
 
+    void ShaderProgram::setUniform1f(int location, float value) {
+        glUniform1f(location, value);
+    }
+
+    void ShaderProgram::setUniform1f(const std::string& name, float value) {
+        const int location = getUniformLocation(name);
+        if (location != -1) {
+            setUniform1f(location, value);
+        }
+    }
+
     void ShaderProgram::setUniform3f(int location, glm::vec3 value) {
         glUniform3f(location, value.x, value.y, value.z);
     }

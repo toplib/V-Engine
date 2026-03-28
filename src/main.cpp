@@ -19,6 +19,11 @@
 #include "gameobject/GameObject.h"
 #include "core/Transform.h"
 #include "debug/Logger.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
 
@@ -166,6 +171,7 @@ int main()
     light.setLightType(Lighting::LightType::POINT);
     light.setTransform(Transform::Transform());
     light.setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
     Lighting::Light light2 = Lighting::Light();
     light2.setLightType(Lighting::LightType::POINT);
     light2.setTransform(
@@ -196,6 +202,16 @@ int main()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     float moveSpeed = 0.04f;
+
+    // ImGUI init
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    // V-Sync off
+    glfwSwapInterval(120);
     while (!window.shouldClose()) {
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
@@ -261,14 +277,28 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::Begin("Debug");
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        ImGui::SliderFloat("Move Speed", &moveSpeed, 0.01f, 0.5f);
+        ImGui::End();
+
         renderer.render();
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         window.swapBuffers();
         window.pollEvents();
     }
 
     // Cleanup
-
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     window.shutdown();
     return 0;
 }
