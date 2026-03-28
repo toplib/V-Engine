@@ -209,15 +209,26 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+
     // Debug menu parameters
     float moveSpeed = 0.04f;
     bool changeSpeedManually = false;
     bool lockFPS = false;
+    glm::vec4 color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     // Add Object Menu
     bool showAddObjects = false;
     GameObject::GameObject tempGameObject;
     tempGameObject.setMeshRenderer(meshRenderer);
+    char objPath[256] = "";
+    char texturePath[256] = "";
+
+    std::vector<glm::vec3> objectEulerAngles;
+
+    glm::vec3 tempPosition = glm::vec3(0.0f);
+    glm::vec3 tempRotationEuler = glm::vec3(0.0f);
+    glm::vec3 tempScale = glm::vec3(1.0f);
+
     while (!window.shouldClose()) {
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
@@ -294,7 +305,7 @@ int main()
         if (ImGui::Button(changeSpeedManually ? "Change Speed Manually: ON" : "Change Speed Manually: OFF")) {
             changeSpeedManually = !changeSpeedManually;
         }
-        if (ImGui::Button(lockFPS ? "Unlock FPS" : "Lock FPS")) {
+        if (ImGui::Button(lockFPS ? "Lock FPS" : "Unlock FPS")) {
             if (lockFPS) {
                 glfwSwapInterval(1);
                 lockFPS = false;
@@ -311,12 +322,26 @@ int main()
         if (ImGui::Button(showAddObjects ? "Close Object adder menu" : "Open Object adder menu")) {
             showAddObjects = !showAddObjects;
         }
-        for (int i = 0; i < scene.getGameObjects().size(); i++) {
+
+        while (objectEulerAngles.size() < scene.getGameObjects().size()) {
+            int idx = objectEulerAngles.size();
+            glm::vec3 euler = glm::degrees(glm::eulerAngles(scene.getGameObjects()[idx].getTransform().getRotation()));
+            objectEulerAngles.push_back(euler);
+        }
+        if (objectEulerAngles.size() > scene.getGameObjects().size()) {
+            objectEulerAngles.resize(scene.getGameObjects().size());
+        }
+
+        for (int i = 0; i < scene.getGameObjects().size();) {
             ImGui::Text("GameObject %d", i);
             ImGui::PushID(i);
             if (ImGui::Button("Remove GameObject")) {
                 scene.getGameObjects().erase(scene.getGameObjects().begin() + i);
+                objectEulerAngles.erase(objectEulerAngles.begin() + i);
+                ImGui::PopID();
+                continue;
             }
+
             ImGui::Text("Position for object %d", i);
             float xPos = scene.getGameObjects()[i].getTransform().getPosition().x;
             float yPos = scene.getGameObjects()[i].getTransform().getPosition().y;
@@ -324,21 +349,13 @@ int main()
             ImGui::SliderFloat("X Position", &xPos, -10.0f, 10.0f);
             ImGui::SliderFloat("Y Position", &yPos, -10.0f, 10.0f);
             ImGui::SliderFloat("Z Position", &zPos, -10.0f, 10.0f);
-
-
+            scene.getGameObjects()[i].getTransform().setPosition({xPos, yPos, zPos});
 
             ImGui::Text("Rotation for object %d", i);
-            scene.getGameObjects()[i].getTransform().setPosition({xPos, yPos, zPos});
-            glm::quat currentRotation = scene.getGameObjects()[i].getTransform().getRotation();
-            glm::vec3 eulerAngles = glm::eulerAngles(currentRotation);
-            float xRot = glm::degrees(eulerAngles.x);
-            float yRot = glm::degrees(eulerAngles.y);
-            float zRot = glm::degrees(eulerAngles.z);
-            ImGui::SliderFloat("X Rotation", &xRot, -180.0f, 180.0f);
-            ImGui::SliderFloat("Y Rotation", &yRot, -180.0f, 180.0f);
-            ImGui::SliderFloat("Z Rotation", &zRot, -180.0f, 180.0f);
-            glm::vec3 newEulerRadians = glm::radians(glm::vec3(xRot, yRot, zRot));
-            glm::quat newRotation = glm::quat(newEulerRadians);
+            ImGui::SliderFloat("X Rotation", &objectEulerAngles[i].x, -180.0f, 180.0f);
+            ImGui::SliderFloat("Y Rotation", &objectEulerAngles[i].y, -180.0f, 180.0f);
+            ImGui::SliderFloat("Z Rotation", &objectEulerAngles[i].z, -180.0f, 180.0f);
+            glm::quat newRotation = glm::quat(glm::radians(objectEulerAngles[i]));
             scene.getGameObjects()[i].getTransform().setRotation(newRotation);
 
             ImGui::Text("Scale for object %d", i);
@@ -351,14 +368,73 @@ int main()
             scene.getGameObjects()[i].getTransform().setScale({xScale, yScale, zScale});
 
             ImGui::PopID();
+            i++;
         }
         ImGui::End();
 
         if (showAddObjects) {
             ImGui::Begin("Object Adder");
-            ImGui::Text("");
+            ImGui::Text("Mesh settings");
+            ImGui::InputText("Path to .obj", objPath, 256);
+
+            ImGui::Text("Material Settings");
+            ImGui::ColorPicker4("Color", glm::value_ptr(color));
+            ImGui::InputText("Path to texture", texturePath, 256);
+
+            ImGui::Text("Spawn settings");
+            ImGui::Text("   Position");
+            ImGui::SliderFloat("X Position", &tempPosition.x, -10.0f, 10.0f);
+            ImGui::SliderFloat("Y Position", &tempPosition.y, -10.0f, 10.0f);
+            ImGui::SliderFloat("Z Position", &tempPosition.z, -10.0f, 10.0f);
+            ImGui::Text("   Rotation");
+            ImGui::SliderFloat("X Rotation", &tempRotationEuler.x, -180.0f, 180.0f);
+            ImGui::SliderFloat("Y Rotation", &tempRotationEuler.y, -180.0f, 180.0f);
+            ImGui::SliderFloat("Z Rotation", &tempRotationEuler.z, -180.0f, 180.0f);
+            ImGui::Text("   Scale");
+            ImGui::SliderFloat("X Scale", &tempScale.x, 0.01f, 10.0f);
+            ImGui::SliderFloat("Y Scale", &tempScale.y, 0.01f, 10.0f);
+            ImGui::SliderFloat("Z Scale", &tempScale.z, 0.01f, 10.0f);
+
+            tempGameObject.getTransform().setPosition(tempPosition);
+            tempGameObject.getTransform().setRotation(glm::quat(glm::radians(tempRotationEuler)));
+            tempGameObject.getTransform().setScale(tempScale);
+
             if (ImGui::Button("Add GameObject to scene")) {
-                scene.addGameObject(&tempGameObject);
+                std::string contents = loadShaderFromPath(std::string(objPath).c_str());
+                parser.source(&contents);
+                Mesh::Mesh* newMesh = new Mesh::Mesh(parser.parse());
+                newMesh->build();
+
+                Texture::Texture* newTexture = new Texture::Texture();
+                if (!newTexture->load(std::string(texturePath))) {
+                    std::cerr << "Failed to load texture: " << texturePath << std::endl;
+                }
+
+                Material::Material* newMaterial = new Material::Material();
+                newMaterial->setTexture(newTexture);
+                newMaterial->setColor(color);
+                newMaterial->setShader(&shaderProgram);
+
+                Rendering::MeshRenderer* newMR = new Rendering::MeshRenderer();
+                newMR->setMesh(*newMesh);
+                newMR->setMaterial(*newMaterial);
+
+                GameObject::GameObject* newGO = new GameObject::GameObject();
+                newGO->setMeshRenderer(*newMR);
+                newGO->setTransform(Transform::Transform(
+                    tempPosition,
+                    glm::quat(glm::radians(tempRotationEuler)),
+                    tempScale
+                ));
+
+                scene.addGameObject(newGO);
+                objectEulerAngles.push_back(tempRotationEuler);
+
+                tempPosition = glm::vec3(0.0f);
+                tempRotationEuler = glm::vec3(0.0f);
+                tempScale = glm::vec3(1.0f);
+                memset(objPath, 0, sizeof(objPath));
+                memset(texturePath, 0, sizeof(texturePath));
             }
             ImGui::End();
         }
