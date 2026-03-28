@@ -39,7 +39,6 @@ int main()
     package.open("/home/toplib/V-Engine/res/demo.vpf");
     if (package.has("textures/hazmat.png")) logger.printDebug("YES");
     package.close();
-    return 0;
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
     if (!window.isInitialized()) {
