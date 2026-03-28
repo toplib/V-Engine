@@ -24,8 +24,8 @@
 #include "imgui_impl_opengl3.h"
 
 
-int SCR_WIDTH = 800;
-int SCR_HEIGHT = 600;
+int SCR_WIDTH = 1280;
+int SCR_HEIGHT = 720;
 
 const float MOUSE_SENSITIVITY = 0.2f;
 const float MAX_PITCH = 80.0f;
@@ -201,7 +201,6 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    float moveSpeed = 0.04f;
 
     // ImGUI init
     IMGUI_CHECKVERSION();
@@ -210,18 +209,27 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window.getGLFWWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    // V-Sync off
-    glfwSwapInterval(120);
+    // Debug menu parameters
+    float moveSpeed = 0.04f;
+    bool changeSpeedManually = false;
+    bool lockFPS = false;
+
+    // Add Object Menu
+    bool showAddObjects = false;
+    GameObject::GameObject tempGameObject;
+    tempGameObject.setMeshRenderer(meshRenderer);
     while (!window.shouldClose()) {
         if (window.getKey(GLFW_KEY_ESCAPE) == Input::InputType::PRESS) {
             window.setShouldClose(true);
         }
 
         // TODO: Move to camera control class
-        if (window.getKey(GLFW_KEY_LEFT_SHIFT) == Input::InputType::PRESS) {
-            moveSpeed = 0.12f;
-        } else {
-            moveSpeed = 0.04f;
+        if (!changeSpeedManually) {
+            if (window.getKey(GLFW_KEY_LEFT_SHIFT) == Input::InputType::PRESS) {
+                moveSpeed = 0.12f;
+            } else {
+                moveSpeed = 0.04f;
+            }
         }
         if (window.getKey(GLFW_KEY_W) == Input::InputType::PRESS) {
             camera.moveForward(moveSpeed);
@@ -281,10 +289,79 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::Begin("Debug");
+        ImGui::Begin("Debug Panel");
         ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+        if (ImGui::Button(changeSpeedManually ? "Change Speed Manually: ON" : "Change Speed Manually: OFF")) {
+            changeSpeedManually = !changeSpeedManually;
+        }
+        if (ImGui::Button(lockFPS ? "Unlock FPS" : "Lock FPS")) {
+            if (lockFPS) {
+                glfwSwapInterval(1);
+                lockFPS = false;
+            } else {
+                glfwSwapInterval(0);
+                lockFPS = true;
+            }
+        }
         ImGui::SliderFloat("Move Speed", &moveSpeed, 0.01f, 0.5f);
         ImGui::End();
+
+        ImGui::Begin("Objects");
+        ImGui::Text("Objects");
+        if (ImGui::Button(showAddObjects ? "Close Object adder menu" : "Open Object adder menu")) {
+            showAddObjects = !showAddObjects;
+        }
+        for (int i = 0; i < scene.getGameObjects().size(); i++) {
+            ImGui::Text("GameObject %d", i);
+            ImGui::PushID(i);
+            if (ImGui::Button("Remove GameObject")) {
+                scene.getGameObjects().erase(scene.getGameObjects().begin() + i);
+            }
+            ImGui::Text("Position for object %d", i);
+            float xPos = scene.getGameObjects()[i].getTransform().getPosition().x;
+            float yPos = scene.getGameObjects()[i].getTransform().getPosition().y;
+            float zPos = scene.getGameObjects()[i].getTransform().getPosition().z;
+            ImGui::SliderFloat("X Position", &xPos, -10.0f, 10.0f);
+            ImGui::SliderFloat("Y Position", &yPos, -10.0f, 10.0f);
+            ImGui::SliderFloat("Z Position", &zPos, -10.0f, 10.0f);
+
+
+
+            ImGui::Text("Rotation for object %d", i);
+            scene.getGameObjects()[i].getTransform().setPosition({xPos, yPos, zPos});
+            glm::quat currentRotation = scene.getGameObjects()[i].getTransform().getRotation();
+            glm::vec3 eulerAngles = glm::eulerAngles(currentRotation);
+            float xRot = glm::degrees(eulerAngles.x);
+            float yRot = glm::degrees(eulerAngles.y);
+            float zRot = glm::degrees(eulerAngles.z);
+            ImGui::SliderFloat("X Rotation", &xRot, -180.0f, 180.0f);
+            ImGui::SliderFloat("Y Rotation", &yRot, -180.0f, 180.0f);
+            ImGui::SliderFloat("Z Rotation", &zRot, -180.0f, 180.0f);
+            glm::vec3 newEulerRadians = glm::radians(glm::vec3(xRot, yRot, zRot));
+            glm::quat newRotation = glm::quat(newEulerRadians);
+            scene.getGameObjects()[i].getTransform().setRotation(newRotation);
+
+            ImGui::Text("Scale for object %d", i);
+            float xScale = scene.getGameObjects()[i].getTransform().getScale().x;
+            float yScale = scene.getGameObjects()[i].getTransform().getScale().y;
+            float zScale = scene.getGameObjects()[i].getTransform().getScale().z;
+            ImGui::SliderFloat("X Scale", &xScale, -10.0f, 10.0f);
+            ImGui::SliderFloat("Y Scale", &yScale, -10.0f, 10.0f);
+            ImGui::SliderFloat("Z Scale", &zScale, -10.0f, 10.0f);
+            scene.getGameObjects()[i].getTransform().setScale({xScale, yScale, zScale});
+
+            ImGui::PopID();
+        }
+        ImGui::End();
+
+        if (showAddObjects) {
+            ImGui::Begin("Object Adder");
+            ImGui::Text("");
+            if (ImGui::Button("Add GameObject to scene")) {
+                scene.addGameObject(&tempGameObject);
+            }
+            ImGui::End();
+        }
 
         renderer.render();
 
