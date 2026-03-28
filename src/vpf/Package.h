@@ -3,7 +3,9 @@
 #include <string>
 #include <cstdint>
 #include <vector>
+#include <map>
 
+#include "Hash128.h"
 #include "Header.h"
 #include "CollisionEntry.h"
 #include "FileEntryHeader.h"
@@ -23,6 +25,9 @@ namespace VPF {
 
     private:
         FILE* m_handle = nullptr;
-        uint64_t getChecksum(Header header, std::vector<PathTableEntry> pathTableEntries, std::vector<FileEntryHeader> fileEntryHeaders, std::vector<CollisionEntry> collisionEntries);
+        Header m_headerCache;
+        uint64_t getChecksum();
+        Hash128 hashPath(std::string& path);
+        std::string normalizePath(std::string path);
     };
 }

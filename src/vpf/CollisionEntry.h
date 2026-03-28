@@ -1,15 +1,19 @@
 #pragma once
 #include <cstdint>
+#include <string>
 
 namespace VPF {
 #pragma pack(push, 1)
-    struct CollisionEntry {
+    struct CollisionEntryHeader {
         uint32_t magic;
         uint8_t hashPath[16];
         uint16_t realPathLength;
-        int64_t dataOffset;
-        int64_t nextCollision;
-        char* realPath;
+        uint64_t dataOffset;
+        uint64_t nextCollision;
     };
 #pragma pack(pop)
+    struct CollisionEntry {
+        CollisionEntryHeader header;
+        std::string realPath;
+    };
 }

@@ -1,5 +1,4 @@
 #pragma once
-#pragma pack(push, 1)
 #include <cstdint>
 
 namespace VPF {
@@ -10,4 +9,5 @@ namespace VPF {
         int64_t dataOffset;
     };
 #pragma pack(pop)
+
 }
