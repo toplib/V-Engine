@@ -37,29 +37,29 @@ vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 vec3 calculateLight(Light light){
     vec3 result = vec3(0.0f);
     if(light.type == 0) {  // Point Light
-                           vec3 lightPos = light.position.xyz;
-                           vec3 lightCol = light.color.xyz;
+       vec3 lightPos = light.position.xyz;
+       vec3 lightCol = light.color.xyz;
 
-                           vec3 lightDir = normalize(lightPos - FragPos);
-                           vec3 norm = normalize(Normal);
+       vec3 lightDir = normalize(lightPos - FragPos);
+       vec3 norm = normalize(Normal);
 
-                           float distance = length(lightPos - FragPos);
-                           float denom = light.constant + light.linear * distance + light.quadratic * (distance * distance);
-                           float attenuation = 1.0f / max(denom, 0.0001f);
+       float distance = length(lightPos - FragPos);
+       float denom = light.constant + light.linear * distance + light.quadratic * (distance * distance);
+       float attenuation = 1.0f / max(denom, 0.0001f);
 
-                           float diff = max(dot(norm, lightDir), 0.0);
-                           vec3 diffuse = diff * lightCol;
+       float diff = max(dot(norm, lightDir), 0.0);
+       vec3 diffuse = diff * lightCol;
 
-                           vec3 reflectDir = reflect(-lightDir, norm);
-                           vec3 viewDir = normalize(viewPos - FragPos);
-                           vec3 specular = vec3(0.0f);
+       vec3 reflectDir = reflect(-lightDir, norm);
+       vec3 viewDir = normalize(viewPos - FragPos);
+       vec3 specular = vec3(0.0f);
 
-                           if(diff > 0.0f) {
-                               float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-                               specular = specularStrength * spec * lightCol;
-                           }
+       if(diff > 0.0f) {
+           float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+           specular = specularStrength * spec * lightCol;
+       }
 
-                           result = (diffuse + specular) * attenuation;
+       result = (diffuse + specular) * attenuation;
     }
     return result;
 }

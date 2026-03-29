@@ -73,7 +73,7 @@ int main()
     }
 
     Texture::Texture texture;
-    if (!texture.load("/home/toplib/V-Engine/res/hazmat.jpg")) {
+    if (!texture.loadEXR("/home/toplib/V-Engine/res/wood/stained_pine_nor_gl_4k.exr")) {
         std::cerr << "Failed to load texture" << std::endl;
     }
     Texture::Texture texture1;

@@ -18,6 +18,9 @@ include_directories(
         ${PROJECT_SOURCE_DIR}/include
 )
 
+# OpenEXR
+find_package(OpenEXR REQUIRED)
+
 # GLAD library
 add_library(glad STATIC
         ${PROJECT_SOURCE_DIR}/include/glad/src/glad.c
@@ -92,6 +95,7 @@ set(VALID_SOURCES ${SOURCES}
         src/lighting/Light.cpp
         src/SimpleSceneFactory.h
         src/vpf/VPFHeader.h
+        src/core/transformation/Node.h
 )
 
 # Create executable
@@ -110,6 +114,7 @@ target_link_libraries(V-Engine
         glad
         glfw
         imgui
+        OpenEXR::OpenEXR
         ${CMAKE_DL_LIBS}
 )
 
