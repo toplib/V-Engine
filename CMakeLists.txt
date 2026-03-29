@@ -95,7 +95,8 @@ set(VALID_SOURCES ${SOURCES}
         src/lighting/Light.cpp
         src/SimpleSceneFactory.h
         src/vpf/VPFHeader.h
-        src/core/transformation/Node.h
+        src/core/transformation/HierarchyNode.h
+        src/core/transformation/HierarchyNode.cpp
 )
 
 # Create executable

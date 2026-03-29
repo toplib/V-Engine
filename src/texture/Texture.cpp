@@ -38,7 +38,7 @@ bool Texture::load(const std::string& path) {
         glGenerateMipmap(GL_TEXTURE_2D);
         m_loaded = true;
     } else {
-        std::cerr << "Failed to load texture: " << path << std::endl;
+        throw std::runtime_error("Failed to load texture: " + path);
         glDeleteTextures(1, &m_textureID);
         m_textureID = 0;
         m_loaded = false;
@@ -65,10 +65,8 @@ bool Texture::loadEXR(const std::string& path) {
         file.setFrameBuffer(&pixels[0][0] - dw.min.x - dw.min.y * m_width, 1, m_width);
         file.readPixels(dw.min.y, dw.max.y);
 
-        // Imf::Rgba хранит half (16-bit float), конвертируем в float
         std::vector<float> data(m_width * m_height * 4);
         for (int y = 0; y < m_height; ++y) {
-            // EXR хранится сверху вниз, OpenGL ожидает снизу вверх
             int flippedY = m_height - 1 - y;
             for (int x = 0; x < m_width; ++x) {
                 const Imf::Rgba& px = pixels[y][x];
@@ -95,7 +93,7 @@ bool Texture::loadEXR(const std::string& path) {
         m_loaded = true;
 
     } catch (const std::exception& e) {
-        std::cerr << "Failed to load EXR texture: " << path << " (" << e.what() << ")" << std::endl;
+        throw std::runtime_error("Failed to load texture: " + path + "(" + e.what() + ")");
 
         if (m_textureID != 0) {
             glDeleteTextures(1, &m_textureID);
