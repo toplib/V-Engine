@@ -97,6 +97,7 @@ set(VALID_SOURCES ${SOURCES}
         src/vpf/VPFHeader.h
         src/core/transformation/HierarchyNode.h
         src/core/transformation/HierarchyNode.cpp
+        src/scene/SceneManager.h
 )
 
 # Create executable

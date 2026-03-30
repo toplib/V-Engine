@@ -1,2 +1,4 @@
 - [ ] Implement PBR render
 - [ ] Create simple demo scene
+- [ ] Implement Resource Manager
+- [ ] Implement Scene Manager
