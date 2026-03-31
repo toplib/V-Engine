@@ -11,9 +11,15 @@ namespace Scene {
 
         int addScene(const Scene& scene); // Returns Scene id in future it will be ResourceType::Scene
         void setActiveScene(int index);
+        Scene* getScene(int index);
+        void removeScene(int index);
+        Scene* getActiveScene();
 
         private:
-        Scene m_activeScene;
+        int m_activeSceneIndex = -1;
         std::vector<Scene> m_scenes;
+
+        void fixActiveScene();
+        Scene buildScene(); // Temp
     };
 }

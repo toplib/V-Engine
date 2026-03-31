@@ -98,6 +98,8 @@ set(VALID_SOURCES ${SOURCES}
         src/core/transformation/HierarchyNode.h
         src/core/transformation/HierarchyNode.cpp
         src/scene/SceneManager.h
+        src/scene/SceneManager.cpp
+        src/scene/SceneFactory.h
 )
 
 # Create executable
