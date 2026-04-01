@@ -1,5 +1,8 @@
 #include "GameObject.h"
 
+#include <iostream>
+#include <ostream>
+
 namespace GameObject {
     GameObject::GameObject() = default;
     GameObject::~GameObject() = default;

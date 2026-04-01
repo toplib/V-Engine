@@ -36,6 +36,9 @@ namespace Shader {
         void setUniform1i(int location, int value);
         void setUniform1i(const std::string& name, int value);
 
+        void setUniform1f(int location, float value);
+        void setUniform1f(const std::string& name, float value);
+
         void setUniform3f(int location, glm::vec3 value);
         void setUniform3f(const std::string& name, glm::vec3 value);
 

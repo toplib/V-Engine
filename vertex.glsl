@@ -15,7 +15,6 @@ uniform int m_hasTexture;
 flat out int o_m_hasTexture;
 uniform vec4 m_color;
 out vec4 o_m_color;
-
 void main()
 {
     gl_Position = projection * view * model * vec4(aPos, 1.0);

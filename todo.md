@@ -1,3 +1,5 @@
 - [ ] Implement PBR render
 - [ ] Create simple demo scene
 - [ ] Add streaming
+- [ ] Implement Resource Manager
+- [ ] Implement Scene Manager
