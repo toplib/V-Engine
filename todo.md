@@ -1,5 +1,6 @@
 - [ ] Implement PBR render
 - [ ] Create simple demo scene
-- [ ] Add streaming
+- [ ] Add streaming to the .vpf
 - [ ] Implement Resource Manager
 - [ ] Implement Scene Manager
+- [ ] Fix read() function in .vpf

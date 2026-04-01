@@ -20,13 +20,10 @@
 #include "core/Transform.h"
 #include "debug/Logger.h"
 #include "vpf/Package.h"
-int SCR_WIDTH = 800;
-int SCR_HEIGHT = 600;
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "core/transformation/HierarchyNode.h"
-
 
 int SCR_WIDTH = 1280;
 int SCR_HEIGHT = 720;
@@ -47,7 +44,7 @@ int main()
     package.open("/home/toplib/V-Engine/res/demo.vpf");
     std::string str = "textures/hazmat.png";
     if (package.has(str)) logger.printDebug("YES");
-    package.read(str);
+    //package.read(str);
     package.close();
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 

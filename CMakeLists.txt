@@ -100,7 +100,6 @@ set(VALID_SOURCES ${SOURCES}
         src/vpf/Package.h
         src/vpf/Package.cpp
         src/vpf/CollisionEntry.h
-        src/vpf/VPFHeader.h
         src/core/transformation/HierarchyNode.h
         src/core/transformation/HierarchyNode.cpp
         src/scene/SceneManager.h
