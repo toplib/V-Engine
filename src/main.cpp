@@ -19,6 +19,9 @@
 #include "gameobject/GameObject.h"
 #include "core/Transform.h"
 #include "debug/Logger.h"
+#include "vpf/Package.h"
+int SCR_WIDTH = 800;
+int SCR_HEIGHT = 600;
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -40,16 +43,12 @@ float currentYaw = 0.0f;
 Debug::Logger logger("main");
 int main()
 {
-    Core::HierarchyNode root = Core::HierarchyNode();
-    Core::HierarchyNode node(&root);
-    Core::HierarchyNode femboyObject(&root);
-    Core::HierarchyNode sex(&node);
-    Core::HierarchyNode sex1(&node);
-    Core::HierarchyNode sex2(&node);
-    Core::HierarchyNode sex3(&node);
-    Core::HierarchyNode sex4(&sex3);
-    Core::HierarchyNode sex5(&sex3);
-    Core::HierarchyNode sex6(&sex3);
+    VPF::Package package;
+    package.open("/home/toplib/V-Engine/res/demo.vpf");
+    std::string str = "textures/hazmat.png";
+    if (package.has(str)) logger.printDebug("YES");
+    package.read(str);
+    package.close();
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
     if (!window.isInitialized()) {

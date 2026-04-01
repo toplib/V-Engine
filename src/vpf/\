@@ -1,0 +1,120 @@
+#include "Package.h"
+
+#include <cstddef>
+#include <cstring>
+#include <iostream>
+#include <ostream>
+#include <stdexcept>
+#include "Header.h"
+#include <xxhash.h>
+#include <vector>
+#include "Hash128.h"
+#include "CollisionEntry.h"
+#include "FileEntryHeader.h"
+#include "PathTableEntry.h"
+
+namespace VPF {
+    Package::Package() = default;
+    Package::~Package() {
+        close();
+    }
+
+    Package::Package(std::string path) {
+        open(path);
+    }
+
+
+    bool Package::has(std::string path) {
+        if(!m_handle){
+            throw std::runtime_error("Package::has() cannot find element. m_handle == nullptr");
+        }
+        path = normalizePath(path); // Normalize windows style path's 
+        Hash128 pathHash = hashPath(path);
+
+        uint64_t slot = pathHash.low ^ pathHash.high;
+        slot = slot % m_headerCache.fileCount;
+        
+        uint64_t totalOffset = sizeof(Header) + (sizeof(PathTableEntry) * slot);
+        //fseek(m_handle, totalOffset, SEEK_SET); // Set header offset of file
+        // s
+        return false;
+    }
+
+    void Package::open(std::string path) {
+        m_handle = fopen(path.c_str(), "rb");
+        if (!m_handle) {
+            throw std::runtime_error("Cannot open package file: " + path);
+        }
+        Header header;
+        fread(&header, sizeof(Header), 1, m_handle);
+
+        printf("Magic: 0x%08X \n", header.magic);
+        printf("Version: 0x%08X \n", header.version);
+        printf("Flags: 0x%04X \n", header.flags);
+        printf("HashTableSize: %llu bytes \n", (unsigned long long) header.hashTableSize);
+        printf("FileCount: %llu \n", (unsigned long long) header.fileCount);
+        printf("Checksum: 0x%16llX \n", header.checksum);
+        printf("CompressionType: 0x%02X \n", header.compressionType);
+        printf("EncryptionType: 0x%02X \n", header.encryptionType);
+        uint64_t computedChecksum = getChecksum();
+        printf("Computed checksum: 0x%016llX\n", (unsigned long long)computedChecksum);
+        std::string str_path = "textures/hazmat.png";
+        Hash128 computedHash = hashPath(str_path);
+        std::cout << computedHash.low << std::endl;
+
+        fseek(m_handle, sizeof(Header), SEEK_SET);
+
+
+        const uint64_t slotCount = header.hashTableSize / sizeof(PathTableEntry);
+
+        for (uint64_t i = 0; i < slotCount; i++) {
+            PathTableEntry entry;
+            if (fread(&entry, sizeof(PathTableEntry), 1, m_handle) != 1) {
+                throw std::runtime_error("Failed to read path table entry " + std::to_string(i));
+            }
+            //pathTableCache.push_back(entry);
+        }
+        //printf("%d entries \n", pathTableCache.size());
+    }
+
+    void Package::close() {
+        if (m_handle) {
+            fclose(m_handle);
+            m_handle = nullptr;
+        }
+    }
+
+    uint64_t Package::getChecksum() {
+        if (!m_handle) {
+            throw std::runtime_error("Cannot get checksum from package file");
+        }
+
+        fseek(m_handle, 0, SEEK_END);
+        long fileSize = ftell(m_handle);
+        fseek(m_handle, 0, SEEK_SET);
+
+        std::vector<uint8_t> buf(fileSize);
+        fread(buf.data(), 1, fileSize, m_handle);
+
+        memset(buf.data() + 26, 0, 8);
+
+        return XXH64(buf.data(), buf.size(), 0);
+    }
+
+    Hash128 Package::hashPath(std::string& path) {
+        XXH128_hash_t hash = XXH3_128bits(path.data(), path.size());
+        return {
+            hash.low64,
+            hash.high64
+        };
+    }
+
+    std::string Package::normalizePath(std::string path) {
+        for (int i = 0; i < path.size(); i++) {
+            if (path[i] == '\\') {
+                path[i] = '/';
+            }
+        }
+    }
+
+}

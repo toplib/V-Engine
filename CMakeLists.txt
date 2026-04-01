@@ -94,6 +94,12 @@ set(VALID_SOURCES ${SOURCES}
         src/core/Engine.h
         src/lighting/Light.cpp
         src/SimpleSceneFactory.h
+        src/vpf/Header.h
+        src/vpf/PathTableEntry.h
+        src/vpf/FileEntryHeader.h
+        src/vpf/Package.h
+        src/vpf/Package.cpp
+        src/vpf/CollisionEntry.h
         src/vpf/VPFHeader.h
         src/core/transformation/HierarchyNode.h
         src/core/transformation/HierarchyNode.cpp
@@ -117,6 +123,7 @@ target_include_directories(V-Engine PRIVATE
 target_link_libraries(V-Engine
         glad
         glfw
+        xxhash
         imgui
         OpenEXR::OpenEXR
         ${CMAKE_DL_LIBS}
