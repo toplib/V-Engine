@@ -37,7 +37,9 @@ int main()
 {
     VPF::Package package;
     package.open("/home/toplib/V-Engine/res/demo.vpf");
-    if (package.has("textures/hazmat.png")) logger.printDebug("YES");
+    std::string str = "textures/hazmat.png";
+    if (package.has(str)) logger.printDebug("YES");
+    package.read(str);
     package.close();
     Window::Window window(SCR_WIDTH, SCR_HEIGHT, "V-Engine");
 
