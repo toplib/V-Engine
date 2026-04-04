@@ -105,6 +105,8 @@ set(VALID_SOURCES ${SOURCES}
         src/scene/SceneManager.h
         src/scene/SceneManager.cpp
         src/scene/SceneFactory.h
+        src/rendering/RenderPass.h
+        src/rendering/DefaultRenderPass.h
 )
 
 # Create executable
