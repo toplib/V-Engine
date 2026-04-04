@@ -2,6 +2,7 @@
 
 namespace Rendering {
     class RenderPass {
+    public:
         RenderPass();
         virtual ~RenderPass();
 

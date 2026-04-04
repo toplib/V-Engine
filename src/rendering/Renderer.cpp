@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include "Renderer.h"
-#include "MeshRenderer.h"
+#include "../component/MeshRenderer.h"
 
 namespace Rendering {
     Renderer::Renderer(Scene::Scene& scene) : m_scene(scene) {}
@@ -12,7 +12,12 @@ namespace Rendering {
 
         for (int i = 0; i < objects.size(); i++) {
             if (objects[i].m_rendererEnabled) {
-                MeshRenderer& mr = objects[i].getMeshRenderer();
+                Component::MeshRenderer& mr = objects[i].getComponents();
+                for (Component::Component component : objects[i].getComponents()) {
+                    if (mr* = dynamic_cast<Component::MeshRenderer*>(component)) {
+
+                    }
+                }
                 Mesh::Mesh& mesh = mr.getMesh();
                 Material::Material& material = mr.getMaterial();
 

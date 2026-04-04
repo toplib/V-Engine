@@ -1,17 +1,18 @@
 #pragma once
 #include "core/Transform.h"
-#include "rendering/MeshRenderer.h"
-
+#include "component/Component.h"
 namespace GameObject {
     class GameObject {
     public:
         GameObject();
         ~GameObject();
 
-        Rendering::MeshRenderer& getMeshRenderer();
-        Transform::Transform& getTransform();
+        std::vector<Component::Component> getComponents();
+        void setComponents(std::vector<Component::Component> components);
+        template<typename T, typename... Args>
+        T* addComponent(Args&&... args);
 
-        void setMeshRenderer(Rendering::MeshRenderer renderer);
+        Transform::Transform& getTransform();
         void setTransform(Transform::Transform transform); 
 
         void start();
@@ -19,7 +20,7 @@ namespace GameObject {
 
         bool m_rendererEnabled = true;
     private:
-        Rendering::MeshRenderer m_renderer;
+        std::vector<Component::Component> m_components;
         Transform::Transform m_transform;
     };
 }

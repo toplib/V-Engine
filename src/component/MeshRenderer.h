@@ -1,15 +1,19 @@
 #pragma once
+#include "Component.h"
 #include "material/Material.h"
 #include "mesh/Mesh.h"
 
-namespace Rendering {
-   class MeshRenderer {
+namespace Component {
+   class MeshRenderer : Component {
       public:
       MeshRenderer();
-      ~MeshRenderer();
+      ~MeshRenderer() override;
 
       Material::Material& getMaterial();
       Mesh::Mesh& getMesh();
+
+      void start() override;
+      void update() override;
 
       void setMaterial(Material::Material material);
       void setMesh(Mesh::Mesh mesh);

@@ -1,12 +1,21 @@
 #include "MeshRenderer.h"
 
-namespace Rendering {
+namespace Component {
     MeshRenderer::MeshRenderer() = default;
     MeshRenderer::~MeshRenderer() = default;
+
+    void MeshRenderer::start() {
+        // Do nothing
+    }
+
+    void MeshRenderer::update() {
+        // Do nothing
+    }
 
     void MeshRenderer::setMaterial(Material::Material material) {
         m_material = material;
     }
+
     void MeshRenderer::setMesh(Mesh::Mesh mesh) {
         m_mesh = mesh;
     }

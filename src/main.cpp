@@ -15,7 +15,7 @@
 #include "debug/Logger.h"
 #include "scene/Scene.h"
 #include "rendering/Renderer.h"
-#include "rendering/MeshRenderer.h"
+#include "component/MeshRenderer.h"
 #include "gameobject/GameObject.h"
 #include "core/Transform.h"
 #include "debug/Logger.h"
@@ -120,13 +120,13 @@ int main()
     material2.setShader(&shaderProgram);
     material2.setTexture(&texture2);
 
-    Rendering::MeshRenderer meshRenderer;
+    Component::MeshRenderer meshRenderer;
     meshRenderer.setMesh(mesh);
     meshRenderer.setMaterial(material);
-    Rendering::MeshRenderer meshRenderer1;
+    Component::MeshRenderer meshRenderer1;
     meshRenderer1.setMesh(mesh1);
     meshRenderer1.setMaterial(material1);
-    Rendering::MeshRenderer meshRenderer2;
+    Component::MeshRenderer meshRenderer2;
     meshRenderer2.setMesh(mesh2);
     meshRenderer2.setMaterial(material2);
 
@@ -422,7 +422,7 @@ int main()
                 newMaterial->setColor(color);
                 newMaterial->setShader(&shaderProgram);
 
-                Rendering::MeshRenderer* newMR = new Rendering::MeshRenderer();
+                Component::MeshRenderer* newMR = new Component::MeshRenderer();
                 newMR->setMesh(*newMesh);
                 newMR->setMaterial(*newMaterial);
 

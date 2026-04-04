@@ -74,7 +74,7 @@ set(VALID_SOURCES ${SOURCES}
         src/parser/obj2mesh/OBJ2MeshParser.h
         src/window/InputType.h
         src/scene/Scene.h
-        src/rendering/MeshRenderer.h
+        src/component/MeshRenderer.h
         src/core/Transform.h
         src/core/Transform.cpp
         src/camera/Camera.h
@@ -83,7 +83,7 @@ set(VALID_SOURCES ${SOURCES}
         src/debug/Logger.h
         src/debug/LoggingType.h
         src/debug/Logger.cpp
-        src/rendering/MeshRenderer.cpp
+        src/component/MeshRenderer.cpp
         src/gameobject/GameObject.h
         src/gameobject/GameObject.cpp
         src/scene/Scene.cpp
@@ -107,6 +107,8 @@ set(VALID_SOURCES ${SOURCES}
         src/scene/SceneFactory.h
         src/rendering/RenderPass.h
         src/rendering/DefaultRenderPass.h
+        src/component/Component.h
+        src/component/Component.cpp
 )
 
 # Create executable
